@@ -7,44 +7,38 @@ init({
     storageBackend: AsyncStorage,
     defaultExpires: 1000 * 3600 * 24,
     enableCache: true,
-    sync: {},
+    sync: {}
 });
 
-export default class MqttText extends Component {
+export default class Gateway extends Component {
     constructor(props) {
         super(props);
 
-        const client = new Paho.MQTT.Client('10.10.10.215', 8083, 'unique_client_name');
+        const client = new Paho.MQTT.Client('10.10.10.215', 8083, 'unique_client_name1');
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
         client.connect({ onSuccess: this.onConnect, useSSL: false });
 
         this.state = {
+            connected: false,
             text: '',
             payload: {},
             client,
         };
     }
 
-    pushText = entry => {
-        const { text } = this.state;
-        this.setState({ text: [...text, entry] });
-    };
-
     onConnect = () => {
         const { client } = this.state;
         client.subscribe('gateway/b827ebfffe688fd7/stats');
-        this.pushText(`connected`);
+        this.setState({ connected: true });
     };
 
     onConnectionLost = responseObject => {
-        if (responseObject.errorCode !== 0) {
-            this.pushText(`connection lost: ${responseObject.errorMessage}`);
-        }
+        this.setState({ connected: false });
     };
 
     onMessageArrived = message => {
-        this.setState({ payload: JSON.parse(message.payloadString), text:  message.payloadString});
+        this.setState({ payload: JSON.parse(message.payloadString), text: message.payloadString });
     };
 
     render() {
@@ -60,6 +54,8 @@ export default class MqttText extends Component {
 
         return (
             <View>
+                <Text>-----Gateway------</Text>
+                <Text>{this.state.connected ? "online" : "offline"}</Text>
                 <Text>Gateway Id: {mac}</Text>
                 <Text>Time: {time}</Text>
                 <Text>rxPacketsReceived: {rxPacketsReceived}</Text>

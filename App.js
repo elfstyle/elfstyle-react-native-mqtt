@@ -1,13 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import MqttText from './components/MqttText'
+import Gateway from './components/Gateway'
+import Node from './components/Node'
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <Text>MQTT application</Text>
-        <MqttText node=""/>
+        <Gateway />
+        <Node />
       </View>
     );
   }

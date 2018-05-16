@@ -19,6 +19,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "buffer": "^5.1.0",
     "events": "^2.0.0",
     "expo": "^27.0.1",
@@ -28,6 +29,7 @@
     "react-native": "~0.55.2",
     "react-native-cli": "^2.0.1",
     "react_native_mqtt": "^1.1.9",
+    "utf8": "^3.0.0",
     "util": "^0.10.3"
   }
 }

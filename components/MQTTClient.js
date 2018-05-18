@@ -15,7 +15,10 @@ export default class extends Component {
                 {({ state }) => {
                     return (
                         <Card title="MQTTClient">
-                            <Badge value={state.connected ? "online" : "offline"} />
+                            <Badge
+                                value={state.connected ? "online" : "offline"}
+                                containerStyle={{ backgroundColor: state.connected ? 'seagreen' : 'firebrick' }}
+                            />
                         </Card>
                     )
                 }}
@@ -24,13 +27,6 @@ export default class extends Component {
     }
 }
 
-
-/*
-                    <Badge value={this.state.connected ? "online" : "offline"} />
-                    <Text>destinationName: {this.state.destinationName}</Text>
-                    <Divider style={{ backgroundColor: 'lightgrey' }} />
-                    <Text>payloadString: {this.state.payloadString}</Text>
-*/
 const styles = StyleSheet.create({
     containerClient: {
         flex: 1,

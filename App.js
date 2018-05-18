@@ -1,25 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import MQTTClient from './components/MQTTClient'
+import { Header } from 'react-native-elements'
 
 export default class App extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
-        <ScrollView>
-          <Text>MQTT application</Text>
-          <MQTTClient />
-        </ScrollView>
+      <View>
+        <Header
+          leftComponent={{ icon: 'menu', color: '#fff' }}
+          centerComponent={{ text: 'LoRaPolice', style: { color: '#fff' } }}
+          rightComponent={{ icon: 'home', color: '#fff' }}
+        />
+        <MQTTClient />
       </View>
-
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    marginTop: 25
-  },
-});

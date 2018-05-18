@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import base64 from 'base-64'
+import base64 from 'base-64';
+import { Card } from 'react-native-elements';
 
 export default class extends Component {
 
@@ -15,11 +16,10 @@ export default class extends Component {
         const dataDecoded = data ? base64.decode(data) : "";
 
         return (
-            <View>
-                <Text>-----Node------</Text>
+            <Card title='Node'>
                 <Text>Device Name {deviceName}</Text>
                 <Text>Data {dataDecoded}</Text>
-            </View>
+            </Card>
         );
     }
 }

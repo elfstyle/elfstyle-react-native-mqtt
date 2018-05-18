@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
-import { AsyncStorage, StyleSheet, Text, View } from 'react-native';
+import { AsyncStorage, StyleSheet, Text, View, ScrollView } from 'react-native';
 import Gateway from './Gateway';
 import Node from './Node';
+import { Card, Badge, Divider } from 'react-native-elements'
 
 init({
     size: 10000,
@@ -55,16 +56,17 @@ export default class extends Component {
 
     render() {
         return (
-            <View>
-                <View style={styles.containerClient}>
-                    <Text>-----MQTTClient------ {this.state.connected ? "online" : "offline"}</Text>
+            <ScrollView>
+                <Card title="MQTTClient">
+                    <Badge value={this.state.connected ? "online" : "offline"} />
                     <Text>destinationName: {this.state.destinationName}</Text>
+                    <Divider style={{ backgroundColor: 'lightgrey' }} />
                     <Text>payloadString: {this.state.payloadString}</Text>
-                </View>
+                </Card>
                 <Gateway payload={this.state['gateway/b827ebfffe688fd7/stats']} />
                 <Node payload={this.state['application/2/node/600194ffff37fdd8/rx']} />
                 <Node payload={this.state['application/2/node/68c63affffa547aa/rx']} />
-            </View>
+            </ScrollView>
         );
     }
 }

@@ -23,7 +23,9 @@ export class Provider extends Component {
         client.connect({
             onSuccess: this.onConnect,
             useSSL: false,
-            reconnect: true
+            reconnect: true,
+            hosts: ["10.10.10.215", "178.136.225.95"],
+            ports: [8083, 7778]
         });
 
         this.state = {
@@ -34,15 +36,15 @@ export class Provider extends Component {
     }
 
     // writes message to console array
-    consoleLog = (title, message="") => {
+    consoleLog = (title, message = "") => {
         this.setState({ console: [...this.state.console, new ConsoleMessage(title, message)] });
     }
 
     onConnect = () => {
         const { client } = this.state;
-        client.subscribe('gateway/b827ebfffe688fd7/stats');
-        client.subscribe('application/2/node/600194ffff37fdd8/rx');
-        client.subscribe('application/2/node/68c63affffa547aa/rx');
+        client.subscribe('gateway/+/stats');
+        client.subscribe('application/+/node/#');
+
         this.setState({ connected: true });
         this.consoleLog("connected");
     };
@@ -53,8 +55,15 @@ export class Provider extends Component {
     };
 
     onMessageArrived = message => {
+        let payload;
+        try {
+            payload = JSON.parse(message.payloadString);
+        }
+        catch (e) {
+            payload = message.payloadString;
+        }
         this.setState({
-            [message.destinationName]: JSON.parse(message.payloadString)
+            [message.destinationName]: payload
         });
         this.consoleLog(message.destinationName, message.payloadString);
     };

@@ -34,8 +34,8 @@ export class Provider extends Component {
     }
 
     // writes message to console array
-    consoleLog = (message) => {
-        this.setState({ console: [...this.state.console, new ConsoleMessage(message)] });
+    consoleLog = (title, message="") => {
+        this.setState({ console: [...this.state.console, new ConsoleMessage(title, message)] });
     }
 
     onConnect = () => {

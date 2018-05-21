@@ -24,6 +24,7 @@ export class Provider extends Component {
             onSuccess: this.onConnect,
             useSSL: false,
             reconnect: true,
+            cleanSession: false,
             hosts: ["10.10.10.215", "178.136.225.95"],
             ports: [8083, 7778]
         });
@@ -31,7 +32,9 @@ export class Provider extends Component {
         this.state = {
             client,
             connected: false,
-            console: []
+            console: [],
+            gateways: {},
+            nodes: {}
         };
     }
 
@@ -62,9 +65,11 @@ export class Provider extends Component {
         catch (e) {
             payload = message.payloadString;
         }
+
         this.setState({
             [message.destinationName]: payload
         });
+
         this.consoleLog(message.destinationName, message.payloadString);
     };
 

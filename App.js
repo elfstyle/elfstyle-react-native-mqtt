@@ -2,27 +2,14 @@ import React from 'react'
 import { StyleSheet, Text, View, ScrollView } from 'react-native'
 import { Header } from 'react-native-elements'
 
-//--------components-----------
-import MQTTClient from './components/MQTTClient'
-import Node from './components/Node'
-import Gateway from './components/Gateway'
-import Console from './components/Console'
-
 import { Provider } from './ApplicationContext'
+import Root from './routes/root'
 
 export default class App extends React.Component {
   render() {
     return (
       <Provider>
-        <ScrollView pagingEnabled={true}>         
-          <Header
-            leftComponent={{ icon: 'menu', color: '#fff' }}
-            centerComponent={{ text: 'LoRaPolice', style: { color: '#fff' } }}
-            rightComponent={{ icon: 'home', color: '#fff' }}
-          />
-          <MQTTClient />
-          <Console />
-        </ScrollView>
+        <Root />
       </Provider>
     );
   }

@@ -11,7 +11,6 @@ export default class extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <MQTTClient />
                 <Button
                     title="MQTT Clients"
                     onPress={() => this.props.navigation.navigate('MQTTClients')}

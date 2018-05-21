@@ -1,6 +1,7 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, FlatList } from 'react-native'
 import { Consumer } from '../ApplicationContext'
+import Gateway from '../components/Gateway'
 
 export default class extends React.Component {
     static navigationOptions = {
@@ -11,10 +12,15 @@ export default class extends React.Component {
         return (
             <Consumer>
                 {({ state }) => {
+                    const gatewaysArr = Object.keys(state.gateways)
                     return (
-                        <Text>
-                            {JSON.stringify(state.gateways)}
-                        </Text>
+                        <FlatList
+                            data={gatewaysArr}
+                            renderItem={({ item }) => (
+                                <Gateway gatewayId={item} />
+                            )}
+                            keyExtractor={item => item}
+                        />
                     )
                 }}
             </Consumer>

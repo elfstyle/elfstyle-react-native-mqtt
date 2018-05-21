@@ -59,6 +59,7 @@ export class Provider extends Component {
 
     onMessageArrived = message => {
         let payload;
+
         try {
             payload = JSON.parse(message.payloadString);
         }
@@ -66,9 +67,25 @@ export class Provider extends Component {
             payload = message.payloadString;
         }
 
-        this.setState({
-            [message.destinationName]: payload
-        });
+        //populating state.gateways object
+        if (message.destinationName.startsWith('gateway')) {
+            var gatewaysClone = Object.assign({}, this.state.gateways);
+            gatewaysClone[message.destinationName] = payload;
+            this.setState({ gateways: gatewaysClone });
+        }
+
+        //populating state.nodes object
+        if (message.destinationName.startsWith('application')) {
+            var nodesClone = Object.assign({}, this.state.nodes);
+            nodesClone[message.destinationName] = payload;
+            this.setState({ nodes: nodesClone });
+        }
+
+        /*      
+          this.setState({
+                    [message.destinationName]: payload
+                });
+                */
 
         this.consoleLog(message.destinationName, message.payloadString);
     };

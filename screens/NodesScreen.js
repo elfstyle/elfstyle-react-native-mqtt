@@ -1,6 +1,7 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, FlatList } from 'react-native'
 import { Consumer } from '../ApplicationContext'
+import Node from '../components/Node'
 
 export default class extends React.Component {
     static navigationOptions = {
@@ -11,10 +12,15 @@ export default class extends React.Component {
         return (
             <Consumer>
                 {({ state }) => {
+                    const nodesArr = Object.keys(state.nodes)
                     return (
-                        <Text>
-                            {JSON.stringify(state.nodes)}
-                        </Text>
+                        <FlatList
+                            data={nodesArr}
+                            renderItem={({ item }) => (
+                                <Node nodeId={item} />
+                            )}
+                            keyExtractor={item => item}
+                        />
                     )
                 }}
             </Consumer>

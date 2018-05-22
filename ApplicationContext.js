@@ -25,8 +25,8 @@ export class Provider extends Component {
             useSSL: false,
             reconnect: true,
             cleanSession: false,
-            hosts: ["10.10.10.215", "178.136.225.95"],
-            ports: [8083, 7778]
+            hosts: ["178.136.225.95"],
+            ports: [7778]
         });
 
         this.state = {
@@ -81,13 +81,7 @@ export class Provider extends Component {
             this.setState({ nodes: nodesClone });
         }
 
-        /*      
-          this.setState({
-                    [message.destinationName]: payload
-                });
-                */
-
-        this.consoleLog(message.destinationName, message.payloadString);
+        this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
     };
 
     render() {

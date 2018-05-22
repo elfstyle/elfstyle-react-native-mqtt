@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
-
+import { Constants } from 'expo';
 
 init({
     size: 10000,
@@ -11,13 +11,14 @@ init({
     sync: {}
 });
 
-
 const ApplicationContext = React.createContext();
 export class Provider extends Component {
     constructor(props) {
         super(props)
 
-        const client = new Paho.MQTT.Client('10.10.10.215', 8083, 'user1');
+        //console.log( Constants.deviceId);
+
+        const client = new Paho.MQTT.Client('10.10.10.215', 8083, Constants.deviceId);
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
         client.connect({

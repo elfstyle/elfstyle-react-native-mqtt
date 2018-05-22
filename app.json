@@ -9,7 +9,8 @@
      "bundleIdentifier": "com.elfstyle.mqttclient"
    },
    "android": {
-     "package": "com.elfstyle.mqttclient"
+     "package": "com.elfstyle.mqttclient",
+     "permissions": ["INTERNET"]
    }
   }
 }

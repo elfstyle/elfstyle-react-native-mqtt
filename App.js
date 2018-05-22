@@ -14,10 +14,3 @@ export default class App extends React.Component {
     );
   }
 }
-
-/*
-        <Gateway payload={this.state['gateway/b827ebfffe688fd7/stats']} />
-        <Node payload={this.state['application/2/node/600194ffff37fdd8/rx']} />
-        <Node payload={this.state['application/2/node/68c63affffa547aa/rx']} />
-
-*/

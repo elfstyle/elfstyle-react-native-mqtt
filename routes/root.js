@@ -1,23 +1,16 @@
-import { createStackNavigator } from 'react-navigation'
+import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation'
 
 import HomeScreen from '../screens/HomeScreen'
+import CommunicationScreen from '../screens/CommunicationScreen'
 import MQTTClientsScreen from '../screens/MQTTClientsScreen'
 import GatewaysScreen from '../screens/GatewaysScreen'
 import NodesScreen from '../screens/NodesScreen'
 import ConsoleScreen from '../screens/ConsoleScreen'
 
-export default createStackNavigator(
+const HomeTab = createMaterialTopTabNavigator(
     {
-        Home: {
-            screen: HomeScreen
-        },
-
-        MQTTClients: {
-            screen: MQTTClientsScreen
-        },
-
-        Gateways: {
-            screen: GatewaysScreen
+        Communication: {
+            screen: CommunicationScreen
         },
 
         Nodes: {
@@ -29,7 +22,54 @@ export default createStackNavigator(
         }
     },
     {
-        initialRouteName: 'Home',
+        initialRouteName: 'Nodes',
+        swipeEnabled: true,
+        animationEnabled: true,
+        tabBarOptions: {
+            activeTintColor: "white",
+            inactiveTintColor: "gray",
+            scrollEnabled: true,
+            labelStyle: {
+                fontSize: 10,
+            },
+            tabStyle: {
+                paddingTop: 0,
+                marginTop: 0,
+            },
+            style: {
+                backgroundColor: 'black',
+                height: 30,
+            },
+        },
+    }
+);
+
+export default createStackNavigator(
+    {
+        Home: {
+            screen: HomeTab,
+            navigationOptions: {
+                title: 'Elfstyle Mqtt Client',
+                headerTitleAllowFontScaling: true,
+
+            },
+        },
+        NodeDetails: {
+            screen: HomeTab,
+        },
+        ClientDetails: {
+            screen: HomeTab,
+        },
+        GatewayDetails: {
+            screen: HomeTab,
+        },
+    }
+)
+
+
+
+/*
+        initialRouteName: 'Nodes',
         navigationOptions: {
             headerStyle: {
                 backgroundColor: 'black',
@@ -39,5 +79,4 @@ export default createStackNavigator(
                 fontWeight: 'bold',
             },
         },
-    }
-);
+        */

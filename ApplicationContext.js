@@ -16,9 +16,28 @@ export class Provider extends Component {
     constructor(props) {
         super(props)
 
-        //console.log( Constants.deviceId);
+        this.state = {
+            client:{},
+            connected: false,
+            console: [],
+            gateways: {},
+            nodes: {}
+        };
+    }
 
-        const client = new Paho.MQTT.Client('10.10.10.215', 8083, Constants.deviceId);
+    connectMQTTClient = ()=>{
+        let Config = {
+            hostA: '10.10.10.215',
+            portA: 8083,
+            hostB: '178.136.225.95',
+            portB: 7778        
+        }
+
+        this.initMQTTClient(Config);
+    }
+
+    initMQTTClient = (Config)=>{
+        const client = new Paho.MQTT.Client(Config.hostA, Config.portB, Constants.deviceId);
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
         client.connect({
@@ -26,17 +45,10 @@ export class Provider extends Component {
             useSSL: false,
             reconnect: true,
             cleanSession: false,
-            hosts: ["178.136.225.95"],
-            ports: [7778]
+            hosts: [Config.hostB],
+            ports: [Config.portB]
         });
-
-        this.state = {
-            client,
-            connected: false,
-            console: [],
-            gateways: {},
-            nodes: {}
-        };
+        this.setState({client});
     }
 
     // writes message to console array
@@ -50,7 +62,11 @@ export class Provider extends Component {
         client.subscribe('application/+/node/#', { qos: 1 });
 
         this.setState({ connected: true });
-        this.consoleLog("connected");
+        this.consoleLog("connected", `
+            host: ${client.host}:${client.port}
+            path: ${client.path}
+            clientId: ${client.clientId}
+            `);
     };
 
     onConnectionLost = responseObject => {
@@ -85,11 +101,16 @@ export class Provider extends Component {
         this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
     };
 
+    componentDidMount = () => {
+      this.connectMQTTClient();
+    }
+    
     render() {
         return (
-            <ApplicationContext.Provider value={{
+            <ApplicationContext.Provider value={{ 
                 state: this.state,
                 actions: {
+                    connectMQTTClient: this.connectMQTTClient
                 }
             }}>
                 {this.props.children}
@@ -107,5 +128,6 @@ class ConsoleMessage {
         this.id = ConsoleMessage.currentId;
         this.title = title;
         this.message = message;
+        this.dateTime = Date.now();
     }
 }

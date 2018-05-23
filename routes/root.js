@@ -1,11 +1,15 @@
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation'
+import React from 'react'
+import { createStackNavigator, createMaterialTopTabNavigator, createDrawerNavigator } from 'react-navigation'
+import { Button, Icon } from 'react-native-elements'
 
-import HomeScreen from '../screens/HomeScreen'
+import SettingsScreen from '../screens/SettingsScreen'
 import CommunicationScreen from '../screens/CommunicationScreen'
 import MQTTClientsScreen from '../screens/MQTTClientsScreen'
 import GatewaysScreen from '../screens/GatewaysScreen'
 import NodesScreen from '../screens/NodesScreen'
 import ConsoleScreen from '../screens/ConsoleScreen'
+import SettingsButton from '../components/SettingsButton'
+import HamburgerButton from '../components/HamburgerButton'
 
 const HomeTab = createMaterialTopTabNavigator(
     {
@@ -44,13 +48,16 @@ const HomeTab = createMaterialTopTabNavigator(
     }
 );
 
-export default createStackNavigator(
+const HomeStack = createStackNavigator(
     {
-        Home: {
+        HomeTab: {
             screen: HomeTab,
-            navigationOptions: {
-                title: 'Elfstyle Mqtt Client',
-            },
+            navigationOptions: ({ navigation }) => ({
+                headerLeft: <HamburgerButton navigation={navigation} />,
+                headerRight: <SettingsButton navigation={navigation} />,
+    
+            })
+    
         },
         NodeDetails: {
             screen: HomeTab,
@@ -61,6 +68,31 @@ export default createStackNavigator(
         GatewayDetails: {
             screen: HomeTab,
         },
+        Settings: {
+            screen: SettingsScreen,
+        },
+    },
+    {
+        navigationOptions: ({ navigation }) => ({
+            title: 'Elfstyle MQTT Client',
+        })
     }
 )
 
+const SettingsStack = createStackNavigator(
+    {
+        SettingsStack: {
+            screen: SettingsScreen,
+            navigationOptions: ({ navigation }) => ({
+                headerLeft: <HamburgerButton navigation={navigation} />,
+            })
+        },
+    }
+)
+
+const Drawer = createDrawerNavigator(
+    {
+        Home: HomeStack,
+    }
+)
+export default Drawer;

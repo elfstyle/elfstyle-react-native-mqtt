@@ -50,8 +50,6 @@ export default createStackNavigator(
             screen: HomeTab,
             navigationOptions: {
                 title: 'Elfstyle Mqtt Client',
-                headerTitleAllowFontScaling: true,
-
             },
         },
         NodeDetails: {
@@ -66,17 +64,3 @@ export default createStackNavigator(
     }
 )
 
-
-
-/*
-        initialRouteName: 'Nodes',
-        navigationOptions: {
-            headerStyle: {
-                backgroundColor: 'black',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-            },
-        },
-        */

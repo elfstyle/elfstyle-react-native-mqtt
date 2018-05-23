@@ -47,7 +47,7 @@ export class Provider extends Component {
     onConnect = () => {
         const { client } = this.state;
         client.subscribe('gateway/+/stats');
-        client.subscribe('application/+/node/#');
+        client.subscribe('application/+/node/#', { qos: 1 });
 
         this.setState({ connected: true });
         this.consoleLog("connected");

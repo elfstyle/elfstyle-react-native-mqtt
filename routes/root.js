@@ -34,15 +34,15 @@ const HomeTab = createMaterialTopTabNavigator(
             inactiveTintColor: "gray",
             scrollEnabled: true,
             labelStyle: {
-                fontSize: 10,
+                fontSize: 12,
             },
             tabStyle: {
-                paddingTop: 0,
+                paddingTop: 5,
                 marginTop: 0,
             },
             style: {
                 backgroundColor: 'black',
-                height: 30,
+                height: 40,
             },
         },
     }
@@ -55,9 +55,7 @@ const HomeStack = createStackNavigator(
             navigationOptions: ({ navigation }) => ({
                 headerLeft: <HamburgerButton navigation={navigation} />,
                 headerRight: <SettingsButton navigation={navigation} />,
-    
             })
-    
         },
         NodeDetails: {
             screen: HomeTab,

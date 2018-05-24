@@ -127,7 +127,7 @@ class ConsoleMessage {
         ConsoleMessage.currentId += 1;
         this.id = ConsoleMessage.currentId;
         this.title = title;
-        this.message = message;
+        this.body = message;
         this.dateTime = new Date();
     }
 }

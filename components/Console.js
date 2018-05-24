@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Card, ListItem, Divider } from 'react-native-elements'
+import { Card, ListItem, Divider, Badge } from 'react-native-elements'
 
 import { Consumer } from '../ApplicationContext'
 
@@ -18,6 +18,7 @@ export default class extends Component {
                             data={state.console}
                             renderItem={({ item }) => (
                                 <View style={styles.record}>
+                                    <Badge value={item.dateTime.toISOString().replace(/[A-Z]/g," ")} />
                                     <Text style={styles.title}>{item.title}</Text>
                                     <Text style={styles.message}>{item.message}</Text>
                                 </View>

@@ -1,5 +1,4 @@
 elapsedTimeToString = (ms) => {
-    console.log('elapsedTimeToString');
     try {
         const sec = Math.floor(ms / 1000);
         // Calculate the number of days left

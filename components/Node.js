@@ -50,7 +50,8 @@ export default class extends Component {
                     return (
                         <Card title={deviceName}>
                             <Text>Elapsed Time {this.state.elapsedTime}</Text>
-                            <Text>Data {object.msg}</Text>
+                            <Text>Temperature: {object.temperature} °C</Text>
+                            <Text>Humidity: {object.humidity} %</Text>                          
                         </Card>
                     )
                 }}

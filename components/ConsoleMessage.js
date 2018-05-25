@@ -7,7 +7,6 @@ export default class extends React.PureComponent {
         const { dateTime, title, body } = this.props.message;
         const dateTimeString = dateTime.toISOString().replace(/[A-Z]/g, " ");
         return (
-
             <React.Fragment>
                 <Text style={styles.date}>{dateTimeString}</Text>
                 <View style={styles.record}>

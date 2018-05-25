@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import base64 from 'base-64';
 import { Card } from 'react-native-elements';
 import { Consumer } from '../ApplicationContext'
+import { elapsedTimeToString } from '../src/utils'
 
 export default class extends Component {
     constructor(props) {
@@ -10,40 +10,21 @@ export default class extends Component {
 
         this.state = {
             elapsedTime: '',
-            now: '',
             messageTime: null,
-            count: 0
         }
     }
+
     componentDidMount = () => {
-
-        this.state.timer = setInterval(() => {
-            if (this.state.messageTime) {
-                const timeDiff = Date.now() - this.state.messageTime.getTime();
-                const timeDiffString = timeDiff > 0 ? this.millisecondsToString(timeDiff) : '';
-                this.setState({
-                    elapsedTime: timeDiffString,
-                });
-            }
-        },
-            1000
-        );
+        this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
     }
 
-    millisecondsToString = (ms) => {
-        try {
-            const sec = Math.floor(ms / 1000);
-            // Calculate the number of days left
-            const hours = Math.floor(sec / 3600)
-            // After days and hours , how many minutes are left
-            const minutes = Math.floor((sec - (hours * 3600)) / 60)
-            // Finally how many seconds left after removing days, hours and minutes.
-            const secs = Math.floor((sec - (hours * 3600) - (minutes * 60)))
-
-            return `${hours}:${minutes > 9 ? minutes : '0' + minutes}:${secs > 9 ? secs : '0' + secs} `;
-        }
-        catch (e) {
-            return `oops`;
+    calcElapsedTime = () => {
+        if (this.state.messageTime) {
+            const timeDiff = Date.now() - this.state.messageTime.getTime();
+            const timeDiffString = timeDiff > 0 ? elapsedTimeToString(timeDiff) : '';
+            this.setState({
+                elapsedTime: timeDiffString,
+            });
         }
     }
 

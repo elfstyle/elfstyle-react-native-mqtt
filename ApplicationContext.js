@@ -17,7 +17,7 @@ export class Provider extends Component {
         super(props)
 
         this.state = {
-            client:{},
+            client: {},
             connected: false,
             console: [],
             gateways: {},
@@ -25,18 +25,18 @@ export class Provider extends Component {
         };
     }
 
-    connectMQTTClient = ()=>{
+    connectMQTTClient = () => {
         let Config = {
             hostA: '10.10.10.215',
             portA: 8083,
             hostB: '178.136.225.95',
-            portB: 7778        
+            portB: 7778
         }
 
         this.initMQTTClient(Config);
     }
 
-    initMQTTClient = (Config)=>{
+    initMQTTClient = (Config) => {
         const client = new Paho.MQTT.Client(Config.hostA, Config.portB, Constants.deviceId);
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
@@ -48,12 +48,13 @@ export class Provider extends Component {
             hosts: [Config.hostB],
             ports: [Config.portB]
         });
-        this.setState({client});
+        this.setState({ client });
     }
 
     // writes message to console array
     consoleLog = (title, message = "") => {
-        this.setState({ console: [...this.state.console, new ConsoleMessage(title, message)] });
+        const consoleDepth = 100;
+        this.setState({ console: [new ConsoleMessage(title, message), ...(this.state.console.slice(0, consoleDepth - 1))] });
     }
 
     onConnect = () => {
@@ -74,40 +75,53 @@ export class Provider extends Component {
         this.consoleLog(responseObject.errorMessage);
     };
 
+    /*    
+    message:
+        payloadString	string	read only The payload as a string if the payload consists of valid UTF-8 characters.
+        payloadBytes	ArrayBuffer	read only The payload as an ArrayBuffer.
+        destinationName	string	mandatory The name of the destination to which the message is to be sent (for messages about to be sent) or the name of the destination from which the message has been received. (for messages received by the onMessage function).
+        qos	number	The Quality of Service used to deliver the message.
+                    0 Best effort (default).
+                    1 At least once.
+                    2 Exactly once.
+        retained	Boolean	If true, the message is to be retained by the server and delivered to both current and future subscriptions. If false the server only delivers the message to current subscribers, this is the default for new Messages. A received message has the retained boolean set to true if the message was published with the retained boolean set to true and the subscrption was made after the message has been published.
+        duplicate	Boolean	read only If true, this message might be a duplicate of one which has already been received. This is only set on messages received from the server.
+    */
     onMessageArrived = message => {
         let payload;
 
         try {
             payload = JSON.parse(message.payloadString);
+
+            //populating state.gateways object
+            if (message.destinationName.startsWith('gateway')) {
+                var gatewaysClone = Object.assign({}, this.state.gateways);
+                gatewaysClone[payload.mac] = payload;
+                this.setState({ gateways: gatewaysClone });
+            }
+
+            //populating state.nodes object
+            if (message.destinationName.startsWith('application')) {
+                var nodesClone = Object.assign({}, this.state.nodes);
+                nodesClone[payload.devEUI] = payload;
+                this.setState({ nodes: nodesClone });
+            }
+
+            this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
         }
         catch (e) {
-            payload = message.payloadString;
+            this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, `can't parse payloadString 
+            ${pamessage.payloadString}`);
         }
-
-        //populating state.gateways object
-        if (message.destinationName.startsWith('gateway')) {
-            var gatewaysClone = Object.assign({}, this.state.gateways);
-            gatewaysClone[message.destinationName] = payload;
-            this.setState({ gateways: gatewaysClone });
-        }
-
-        //populating state.nodes object
-        if (message.destinationName.startsWith('application')) {
-            var nodesClone = Object.assign({}, this.state.nodes);
-            nodesClone[message.destinationName] = payload;
-            this.setState({ nodes: nodesClone });
-        }
-
-        this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
     };
 
     componentDidMount = () => {
-      this.connectMQTTClient();
+        this.connectMQTTClient();
     }
-    
+
     render() {
         return (
-            <ApplicationContext.Provider value={{ 
+            <ApplicationContext.Provider value={{
                 state: this.state,
                 actions: {
                     connectMQTTClient: this.connectMQTTClient

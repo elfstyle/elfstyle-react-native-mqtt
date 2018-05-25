@@ -101,10 +101,12 @@ export class Provider extends Component {
             }
 
             //populating state.nodes object
-            if (message.destinationName.startsWith('application')) {
-                var nodesClone = Object.assign({}, this.state.nodes);
-                nodesClone[payload.devEUI] = payload;
-                this.setState({ nodes: nodesClone });
+            if (message.destinationName.startsWith('application') && message.destinationName.endsWith('rx')) {
+                if (payload.object) {
+                    var nodesClone = Object.assign({}, this.state.nodes);
+                    nodesClone[payload.devEUI] = payload;
+                    this.setState({ nodes: nodesClone });
+                }
             }
 
             this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);

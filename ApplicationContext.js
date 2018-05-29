@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import init from 'react_native_mqtt';
 import { AsyncStorage } from 'react-native';
 import { Constants } from 'expo';
+import Config from './src/Config';
 
 init({
     size: 10000,
@@ -17,6 +18,7 @@ export class Provider extends Component {
         super(props)
 
         this.state = {
+            currentConfig: {},
             client: {},
             connected: false,
             console: [],
@@ -25,18 +27,33 @@ export class Provider extends Component {
         };
     }
 
-    connectMQTTClient = () => {
-        let Config = {
-            hostA: '10.10.10.215',
-            portA: 8083,
-            hostB: '178.136.225.95',
-            portB: 7778
+    //tries to receive current config from AsyncStorage and combine it with 
+    //default config object
+    getCurrentConfig = async () => {
+        //default configuration
+        let defaultConfig = new Config();
+
+        let storedConfig = {};
+
+        try {
+            const storedConfigString = await AsyncStorage.getItem('Config');
+            if (value) {
+                storedConfig = JSON.parse(storedConfigString);
+            }
+        } catch (error) {
+            this.consoleLog('Could not find stored config',
+                `Client will use default values for connect:  ${JSON.stringify(defaultConfig)}`);
         }
 
-        this.initMQTTClient(Config);
+        let currentConfig = Object.assign(defaultConfig, storedConfig);
+        this.setState({ currentConfig })
+        return currentConfig;
     }
 
-    initMQTTClient = (Config) => {
+    //connection of MQTT Client with Config 
+    connectMQTTClient = async () => {
+        const Config = await this.getCurrentConfig();
+
         const client = new Paho.MQTT.Client(Config.hostA, Config.portB, Constants.deviceId);
         client.onConnectionLost = this.onConnectionLost;
         client.onMessageArrived = this.onMessageArrived;
@@ -117,8 +134,8 @@ export class Provider extends Component {
         }
     };
 
-    componentDidMount = () => {
-        this.connectMQTTClient();
+    componentDidMount = async () => {
+        await this.connectMQTTClient();
     }
 
     render() {
@@ -126,7 +143,8 @@ export class Provider extends Component {
             <ApplicationContext.Provider value={{
                 state: this.state,
                 actions: {
-                    connectMQTTClient: this.connectMQTTClient
+                    connectMQTTClient: this.connectMQTTClient,
+                    getCurrentConfig: this.getCurrentConfig
                 }
             }}>
                 {this.props.children}

@@ -1,24 +1,24 @@
 import React from 'react'
-import { View, Button, StyleSheet, Text } from 'react-native'
-
-import MQTTClient from '../components/MQTTClient'
+import { View, StyleSheet, Text } from 'react-native'
+import { Button, Icon } from 'react-native-elements'
+import { Consumer } from '../ApplicationContext'
 
 export default class extends React.Component {
     static navigationOptions = {
-        title: 'Settings'
+        title: 'Settings',
     }
 
     render() {
         return (
-            <React.Fragment>
-                <Text>Settings</Text>
-            </React.Fragment>
+            <Consumer>
+                {
+                    ({ state }) => {
+                        return (
+                            <Text>{JSON.stringify(state.currentConfig)}</Text> 
+                        )
+                    }
+                }
+            </Consumer>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    button: {
-        margin: 5
-    }
-});

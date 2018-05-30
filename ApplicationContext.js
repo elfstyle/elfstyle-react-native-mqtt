@@ -19,7 +19,7 @@ export class Provider extends Component {
 
         this.state = {
             currentConfig: {},
-            client: {},
+            client: null,
             connected: false,
             console: [],
             gateways: {},
@@ -37,7 +37,7 @@ export class Provider extends Component {
 
         try {
             const storedConfigString = await AsyncStorage.getItem('Config');
-            if (value) {
+            if (storedConfigString) {
                 storedConfig = JSON.parse(storedConfigString);
             }
         } catch (error) {
@@ -50,8 +50,25 @@ export class Provider extends Component {
         return currentConfig;
     }
 
+    //saves Configuration to AsyncStorage
+    saveConfig = async (config) => {
+        try {
+            await AsyncStorage.setItem('Config', JSON.stringify(config));
+            this.consoleLog('Config saved', JSON.stringify(config));
+
+            await this.connectMQTTClient();           
+        } catch (error) {
+            this.consoleLog('Config not saved', JSON.stringify(config));
+        }
+    }
+
     //connection of MQTT Client with Config 
     connectMQTTClient = async () => {
+        if (this.state.client)
+        {
+            this.state.client.disconnect();
+        }
+
         const Config = await this.getCurrentConfig();
 
         const client = new Paho.MQTT.Client(Config.hostA, Config.portB, Constants.deviceId);
@@ -61,9 +78,11 @@ export class Provider extends Component {
             onSuccess: this.onConnect,
             useSSL: false,
             reconnect: true,
-            cleanSession: false,
+            cleanSession: Config.cleanSession,
             hosts: [Config.hostB],
-            ports: [Config.portB]
+            ports: [Config.portB],
+            userName: Config.userName,
+            password: Config.password,
         });
         this.setState({ client });
     }
@@ -74,22 +93,20 @@ export class Provider extends Component {
         this.setState({ console: [new ConsoleMessage(title, message), ...(this.state.console.slice(0, consoleDepth - 1))] });
     }
 
+    //fires when Connection established
     onConnect = () => {
         const { client } = this.state;
         client.subscribe('gateway/+/stats');
         client.subscribe('application/+/node/#', { qos: 1 });
 
         this.setState({ connected: true });
-        this.consoleLog("connected", `
-            host: ${client.host}:${client.port}
-            path: ${client.path}
-            clientId: ${client.clientId}
-            `);
+        this.consoleLog("Connected", JSON.stringify(this.state.currentConfig));
     };
 
+    //fires when Connection lost
     onConnectionLost = responseObject => {
         this.setState({ connected: false });
-        this.consoleLog(responseObject.errorMessage);
+        this.consoleLog("Disconnected", responseObject.errorMessage);
     };
 
     /*    
@@ -144,7 +161,9 @@ export class Provider extends Component {
                 state: this.state,
                 actions: {
                     connectMQTTClient: this.connectMQTTClient,
-                    getCurrentConfig: this.getCurrentConfig
+                    getCurrentConfig: this.getCurrentConfig,
+                    saveConfig: this.saveConfig,
+                    test: "actions"
                 }
             }}>
                 {this.props.children}

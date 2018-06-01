@@ -8,7 +8,7 @@ elapsedTimeToString = (ms) => {
         // Finally how many seconds left after removing days, hours and minutes.
         const secs = Math.floor((sec - (hours * 3600) - (minutes * 60)))
 
-        return `${hours}:${minutes > 9 ? minutes : '0' + minutes}:${secs > 9 ? secs : '0' + secs} `;
+        return `${hours}:${minutes > 9 ? minutes : '0' + minutes}:${secs > 9 ? secs : '0' + secs}`;
     }
     catch (e) {
         return `oops`;

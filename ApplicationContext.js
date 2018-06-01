@@ -54,37 +54,45 @@ export class Provider extends Component {
     saveConfig = async (config) => {
         try {
             await AsyncStorage.setItem('Config', JSON.stringify(config));
-            this.consoleLog('Config saved', JSON.stringify(config));
-
-            await this.connectMQTTClient();           
+            this.consoleLog('Configuration saved', JSON.stringify(config));
         } catch (error) {
-            this.consoleLog('Config not saved', JSON.stringify(config));
+            this.consoleLog('Configuration not saved', JSON.stringify(error));
         }
+        await this.connectMQTTClient();
     }
 
     //connection of MQTT Client with Config 
     connectMQTTClient = async () => {
-        if (this.state.client)
-        {
-            this.state.client.disconnect();
+        try {
+            if (this.state.client) {
+                this.state.client.disconnect();
+            }
+        }
+        catch (e) {
+            this.consoleLog('Client is not connected');
         }
 
         const Config = await this.getCurrentConfig();
-
-        const client = new Paho.MQTT.Client(Config.hostA, Config.portB, Constants.deviceId);
-        client.onConnectionLost = this.onConnectionLost;
-        client.onMessageArrived = this.onMessageArrived;
-        client.connect({
-            onSuccess: this.onConnect,
-            useSSL: false,
-            reconnect: true,
-            cleanSession: Config.cleanSession,
-            hosts: [Config.hostB],
-            ports: [Config.portB],
-            userName: Config.userName,
-            password: Config.password,
-        });
-        this.setState({ client });
+        try {
+            const client = new Paho.MQTT.Client('127.0.0.1', 8080, Constants.deviceId);
+            client.onConnectionLost = this.onConnectionLost;
+            client.onMessageArrived = this.onMessageArrived;
+            client.connect({
+                onSuccess: this.onConnect,
+                onFailure: this.onFailure,
+                useSSL: Config.useSSL,
+                reconnect: Config.reconnect,
+                cleanSession: Config.cleanSession,
+                hosts: [Config.hostA, Config.hostB],
+                ports: [parseInt(Config.portA), parseInt(Config.portB)],
+                userName: Config.userName,
+                password: Config.password,
+            });
+            this.setState({ client });
+        }
+        catch (e) {
+            this.consoleLog('Configuration is invalid', JSON.stringify(e));
+        }
     }
 
     // writes message to console array
@@ -101,6 +109,23 @@ export class Provider extends Component {
 
         this.setState({ connected: true });
         this.consoleLog("Connected", JSON.stringify(this.state.currentConfig));
+    };
+
+    //called when the connect request has failed or timed out. A single response object parameter is passed to the onFailure callback containing the following fields:
+    //      invocationContext as passed in to the onFailure method in the connectOptions.
+    //      errorCode a number indicating the nature of the error.
+    //      errorMessage text describing the error.
+    onFailure = (object) => {
+        this.consoleLog(
+            "Connection failure",
+            `
+            ${JSON.stringify(this.state.currentConfig)}
+            
+            invocationContext: ${JSON.stringify(object.invocationContext)}
+            errorCode: ${object.errorCode.toString()}
+            errorMessage: ${object.errorMessage}           
+            `
+        );
     };
 
     //fires when Connection lost
@@ -147,7 +172,7 @@ export class Provider extends Component {
         }
         catch (e) {
             this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, `can't parse payloadString 
-            ${pamessage.payloadString}`);
+            ${message.payloadString}`);
         }
     };
 

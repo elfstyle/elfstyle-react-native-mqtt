@@ -12,7 +12,7 @@ export default class extends React.Component {
         return (
             <Consumer>
                 {({ state }) => {
-                    const nodesArr = Object.keys(state.nodes)
+                    const nodesArr = Object.keys(state.nodes);
                     return (
                         <FlatList
                             data={nodesArr}

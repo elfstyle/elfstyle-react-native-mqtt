@@ -46,22 +46,27 @@ export default class extends Component {
                     if (rxInfo) {
                         this.state.messageTime = new Date(rxInfo[0].time);
                     }
-                    const objectKeys = Object.keys(object);
+                    const objectKeys = Object.keys(object).sort();
 
                     return (
-                        <View style={styles.container}>
-                            <Text style={styles.containerTitle}>{`${deviceName} (${this.state.elapsedTime})`}</Text>
-                            <FlatList
-                                horizontal
-                                data={objectKeys}
-                                renderItem={({ item }) => (
-                                    <View style={styles.parameterContainer}>
-                                        <Text style={styles.parameterLabel}>{item}</Text>
-                                        <Text style={styles.parameterValue}>{object[item].toString()}</Text>
-                                    </View>
-                                )}
-                                keyExtractor={item => item}
-                            />
+                        <View style={styles.nodeContainer}>
+                            <View style={styles.nodeHeader}>
+                                <Text style={styles.nodeTitle}>{deviceName}</Text>
+                                <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
+                            </View>
+                            <View>
+                                <FlatList
+                                    horizontal
+                                    data={objectKeys}
+                                    renderItem={({ item }) => (
+                                        <View style={styles.parameterContainer}>
+                                            <Text style={styles.parameterValue}>{object[item].toString()}</Text>
+                                            <Text style={styles.parameterLabel}>{item}</Text>
+                                        </View>
+                                    )}
+                                    keyExtractor={item => item}
+                                />
+                            </View>
                         </View>
                     )
                 }}
@@ -71,18 +76,35 @@ export default class extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    nodeContainer: {
         backgroundColor: 'white',
         padding: 4,
         margin: 4,
         borderRadius: 10,
     },
-    containerTitle: {
+
+    nodeHeader: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        margin: 0,
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingTop: 5,
+    },
+
+    nodeTitle: {
         fontWeight: 'bold',
         color: 'rgb(26,82,118)',
         fontSize: 20,
-        margin: 10,
     },
+
+    nodeElapsedTime: {
+        color: 'gray',
+        fontSize: 12,
+    },
+
     parameterContainer: {
         backgroundColor: 'white',
         padding: 4,
@@ -90,15 +112,16 @@ const styles = StyleSheet.create({
         width: 100,
         borderRadius: 4,
     },
+
     parameterLabel: {
         color: 'darkgrey',
         textAlign: 'center',
         fontSize: 14,
     },
+
     parameterValue: {
         backgroundColor: 'white',
-        margin:0,
-        padding: 5,
+        margin: 0,
         textAlign: 'center',
         color: 'black',
         fontSize: 28,

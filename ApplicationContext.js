@@ -87,6 +87,8 @@ export class Provider extends Component {
                 ports: [parseInt(Config.portA), parseInt(Config.portB)],
                 userName: Config.userName,
                 password: Config.password,
+                timeout: parseInt(Config.timeout),
+                keepAliveInterval: parseInt(Config.keepAliveInterval),
             });
             this.setState({ client });
         }

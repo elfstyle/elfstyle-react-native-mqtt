@@ -46,7 +46,16 @@ export default class extends Component {
                     if (rxInfo) {
                         this.state.messageTime = new Date(rxInfo[0].time);
                     }
-                    const objectKeys = Object.keys(object).sort();
+                    const objectKeys = Object.keys(object);
+
+                    const parameters = objectKeys.map((key) => {
+                        return (
+                            <View style={styles.parameterContainer} key={key}>
+                                <Text style={styles.parameterValue}>{object[key].toString()}</Text>
+                                <Text style={styles.parameterLabel}>{key}</Text>
+                            </View>
+                        );
+                    });
 
                     return (
                         <View style={styles.nodeContainer}>
@@ -54,18 +63,8 @@ export default class extends Component {
                                 <Text style={styles.nodeTitle}>{deviceName}</Text>
                                 <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
                             </View>
-                            <View>
-                                <FlatList
-                                    horizontal
-                                    data={objectKeys}
-                                    renderItem={({ item }) => (
-                                        <View style={styles.parameterContainer}>
-                                            <Text style={styles.parameterValue}>{object[item].toString()}</Text>
-                                            <Text style={styles.parameterLabel}>{item}</Text>
-                                        </View>
-                                    )}
-                                    keyExtractor={item => item}
-                                />
+                            <View style={styles.parametersContainer}>
+                                {parameters}
                             </View>
                         </View>
                     )
@@ -105,11 +104,17 @@ const styles = StyleSheet.create({
         fontSize: 12,
     },
 
+    parametersContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+    },
+
     parameterContainer: {
-        backgroundColor: 'white',
         padding: 4,
-        margin: 4,
-        width: 100,
+        margin: 0,
+        width: '33.33%',
         borderRadius: 4,
     },
 

@@ -7,6 +7,7 @@ import CommunicationScreen from '../screens/CommunicationScreen'
 import MQTTClientsScreen from '../screens/MQTTClientsScreen'
 import GatewaysScreen from '../screens/GatewaysScreen'
 import NodesScreen from '../screens/NodesScreen'
+import NodeParameterScreen from '../screens/NodeParameterScreen'
 import ConsoleScreen from '../screens/ConsoleScreen'
 import SettingsButton from '../components/SettingsButton'
 import HamburgerButton from '../components/HamburgerButton'
@@ -34,14 +35,15 @@ const HomeTab = createMaterialTopTabNavigator(
             inactiveTintColor: "gray",
             scrollEnabled: true,
             labelStyle: {
-                fontSize: 12,
+                fontSize: 13,
+                fontWeight: 'bold',
             },
             tabStyle: {
                 paddingTop: 5,
                 marginTop: 0,
             },
             style: {
-                backgroundColor: 'black',
+                backgroundColor: 'rgb(26,82,118)',
                 height: 40,
             },
         },
@@ -57,8 +59,8 @@ const HomeStack = createStackNavigator(
                 headerRight: <SettingsButton navigation={navigation} />,
             })
         },
-        NodeDetails: {
-            screen: HomeTab,
+        NodeParameter: {
+            screen: NodeParameterScreen,
         },
         ClientDetails: {
             screen: HomeTab,

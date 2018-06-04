@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Card } from 'react-native-elements';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { withNavigation } from 'react-navigation';
 import { Consumer } from '../ApplicationContext'
 import { elapsedTimeToString } from '../src/utils'
 
-export default class extends Component {
+class Node extends Component {
     constructor(props) {
         super(props)
 
@@ -49,12 +49,27 @@ export default class extends Component {
                     const objectKeys = Object.keys(object);
 
                     const parameters = objectKeys.map((key) => {
-                        return (
-                            <View style={styles.parameterContainer} key={key}>
-                                <Text style={styles.parameterValue}>{object[key].toString()}</Text>
-                                <Text style={styles.parameterLabel}>{key}</Text>
-                            </View>
-                        );
+                        const value = object[key];
+                        if (typeof (value) !== 'object')
+                            return (
+                                <TouchableOpacity
+                                    style={styles.parameterContainer}
+                                    key={key}
+                                    onPress={() => {
+                                        this.props.navigation.navigate(
+                                            'NodeParameter',
+                                            {
+                                                deviceName: deviceName,
+                                                parameterName: key,
+                                                nodeId: this.props.nodeId,
+                                            },
+                                        );
+                                    }}
+                                >
+                                    <Text style={styles.parameterValue}>{value.toString()}</Text>
+                                    <Text style={styles.parameterLabel}>{key}</Text>
+                                </TouchableOpacity>
+                            );
                     });
 
                     return (
@@ -73,6 +88,8 @@ export default class extends Component {
         );
     }
 }
+
+export default withNavigation(Node);
 
 const styles = StyleSheet.create({
     nodeContainer: {
@@ -115,6 +132,7 @@ const styles = StyleSheet.create({
         padding: 4,
         margin: 0,
         width: '33.33%',
+        maxWidth: 120,
         borderRadius: 4,
     },
 
@@ -133,39 +151,40 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
-/*        
-{  
-   "applicationID":"2",
-   "applicationName":"Climate",
-   "deviceName":"Elevator",
-   "devEUI":"68c63affffa547aa",
-   "rxInfo":[  
-      {  
-         "mac":"b827ebfffe688fd7",
-         "time":"2018-05-25T07:25:55.266866Z",
-         "rssi":-41,
-         "loRaSNR":7.2,
-         "name":"RPi-RAK831-GW",
-         "latitude":49.9835,
-         "longitude":36.21126,
-         "altitude":99
-      }
-   ],
-   "txInfo":{  
-      "frequency":868500000,
-      "dataRate":{  
-         "modulation":"LORA",
-         "bandwidth":125,
-         "spreadFactor":7
-      },
-      "adr":false,
-      "codeRate":"4/5"
-   },
-   "fCnt":146,
-   "fPort":1,
-   "data":"W1Q9MjYuMDJnci5DXVtIPTUwLjA1JV1bVXQ9NTM5OHNdW0R0PTM3c10=",
-   "object":{  
-      "msg":"[T=26.02gr.C][H=50.05%][Ut=5398s][Dt=37s]"
-   }
+
+/*
+{
+    "applicationID": "2",
+    "applicationName": "Climate",
+    "deviceName": "Elevator",
+    "devEUI": "68c63affffa547aa",
+                    "rxInfo": [
+                        {
+                            "mac": "b827ebfffe688fd7",
+                            "time": "2018-05-25T07:25:55.266866Z",
+                            "rssi": -41,
+                            "loRaSNR": 7.2,
+                            "name": "RPi-RAK831-GW",
+                            "latitude": 49.9835,
+                            "longitude": 36.21126,
+                            "altitude": 99
+                        }
+                    ],
+                        "txInfo": {
+        "frequency": 868500000,
+            "dataRate": {
+            "modulation": "LORA",
+                "bandwidth": 125,
+                    "spreadFactor": 7
+        },
+        "adr": false,
+            "codeRate": "4/5"
+    },
+    "fCnt": 146,
+        "fPort": 1,
+            "data": "W1Q9MjYuMDJnci5DXVtIPTUwLjA1JV1bVXQ9NTM5OHNdW0R0PTM3c10=",
+                "object": {
+        "msg": "[T=26.02gr.C][H=50.05%][Ut=5398s][Dt=37s]"
+    }
 }
 */

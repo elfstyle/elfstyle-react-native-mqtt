@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import init from 'react_native_mqtt';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, ToastAndroid } from 'react-native';
 import { Constants } from 'expo';
 import Config from './src/Config';
 
@@ -55,8 +55,18 @@ export class Provider extends Component {
         try {
             await AsyncStorage.setItem('Config', JSON.stringify(config));
             this.consoleLog('Configuration saved', JSON.stringify(config));
+            ToastAndroid.showWithGravity(
+                'Saved',
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
         } catch (error) {
             this.consoleLog('Configuration not saved', JSON.stringify(error));
+            ToastAndroid.showWithGravity(
+                'Not Saved',
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
         }
         await this.connectMQTTClient();
     }
@@ -178,10 +188,57 @@ export class Provider extends Component {
         }
     };
 
+
+    /*
+    send(topic, payload, qos, retained)
+        Send a message to the consumers of the destination in the Message.
+    Parameters:
+        topic	    string | Paho.MQTT.Message	mandatory The name of the destination to which the message is to be sent. - 
+                                                        If it is the only parameter, used as Paho.MQTT.Message object.
+        payload	    String | ArrayBuffer	    The message data to be sent.
+        qos	        number	                    The Quality of Service used to deliver the message.
+                        0 Best effort (default).
+                        1 At least once.
+                        2 Exactly once.
+        retained	Boolean	If true, the message is to be retained by the server and delivered to both current and future subscriptions. If false the server only delivers the message to current subscribers, this is the default for new Messages. A received message has the retained boolean set to true if the message was published with the retained boolean set to true and the subscrption was made after the message has been published.
+    */
+    sendMessage = (applicationID, devEUI, payload) => {
+        payload.clientID = Constants.deviceId;
+
+        const topic = `application/${applicationID}/node/${devEUI}/tx`;
+
+        try {
+            if (this.state.client) {
+                this.state.client.send(topic, JSON.stringify(payload), 0, false);
+                ToastAndroid.showWithGravity(
+                    'Message sent',
+                    ToastAndroid.LONG,
+                    ToastAndroid.CENTER
+                );
+            }
+            else {
+                ToastAndroid.showWithGravity(
+                    'Client not connected',
+                    ToastAndroid.LONG,
+                    ToastAndroid.CENTER
+                );
+            }
+        }
+        catch (e) {
+            ToastAndroid.showWithGravity(
+                'Message exception',
+                ToastAndroid.LONG,
+                ToastAndroid.CENTER
+            );
+        }
+    }
+    
+    //react lifecycle method
     componentDidMount = async () => {
         await this.connectMQTTClient();
     }
 
+    //react lifecycle method
     render() {
         return (
             <ApplicationContext.Provider value={{
@@ -190,7 +247,7 @@ export class Provider extends Component {
                     connectMQTTClient: this.connectMQTTClient,
                     getCurrentConfig: this.getCurrentConfig,
                     saveConfig: this.saveConfig,
-                    test: "actions"
+                    sendMessage: this.sendMessage,
                 }
             }}>
                 {this.props.children}

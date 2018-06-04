@@ -17,7 +17,7 @@ export default class extends React.Component {
                         <FlatList
                             data={nodesArr}
                             renderItem={({ item }) => (
-                                <Node nodeId={item} />
+                                <Node nodeId={item}/>
                             )}
                             keyExtractor={item => item}
                         />

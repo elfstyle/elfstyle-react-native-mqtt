@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, Text, FlatList, TextInput, Switch } from 'react-native'
+import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 'react-native'
 import { Divider, Button } from 'react-native-elements'
 import { Consumer } from '../ApplicationContext'
 import SettingInput from '../components/SettingInput'
+import ViewWithKeyboard from '../components/ViewWithKeyboard'
 
 export default class extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -48,7 +49,7 @@ export default class extends React.Component {
                         const configKeys = Object.keys(this.state.config);
 
                         return (
-                            <React.Fragment>
+                            <ViewWithKeyboard>
                                 <FlatList
                                     data={configKeys}
                                     renderItem={({ item }) => (
@@ -66,9 +67,9 @@ export default class extends React.Component {
                                         </View>
                                     )}
                                     keyExtractor={item => item}
-                                    ItemSeparatorComponent={()=><Divider style={{ backgroundColor: 'lightgray', width: StyleSheet.hairlineWidth }} />}
+                                    ItemSeparatorComponent={() => <Divider style={{ backgroundColor: 'lightgray', width: StyleSheet.hairlineWidth }} />}
                                 />
-                            </React.Fragment>
+                            </ViewWithKeyboard>
                         )
                     }
                 }

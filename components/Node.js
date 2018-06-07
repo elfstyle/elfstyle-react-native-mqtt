@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import React, { Component } from 'react'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { withNavigation } from 'react-navigation'
 import { Consumer } from '../ApplicationContext'
 import { elapsedTimeToString } from '../src/utils'
+import NodeParameter from './NodeParameter'
 
 class Node extends Component {
     constructor(props) {
@@ -35,55 +36,41 @@ class Node extends Component {
     render() {
         return (
             <Consumer>
-                {({ state }) => {
-                    const nodePayload = state.nodes[this.props.nodeId];
-                    const {
-                        deviceName,
-                        rxInfo,
-                        object
-                    } = nodePayload;
+                {
+                    ({ state }) => {
+                        const nodePayload = state.nodes[this.props.nodeId];
+                        const {
+                            deviceName,
+                            devEUI,
+                            rxInfo,
+                            object
+                        } = nodePayload;
 
-                    if (rxInfo) {
-                        this.state.messageTime = new Date(rxInfo[0].time);
-                    }
-                    const objectKeys = Object.keys(object);
+                        if (rxInfo) {
+                            this.state.messageTime = new Date(rxInfo[0].time);
+                        }
+                        const objectKeys = Object.keys(object);
 
-                    const parameters = objectKeys.map((key) => {
-                        const value = object[key];
-                        if (typeof (value) !== 'object')
+                        const parameters = objectKeys.map((key) => {
                             return (
-                                <TouchableOpacity
-                                    style={styles.parameterContainer}
-                                    key={key}
-                                    onPress={() => {
-                                        this.props.navigation.navigate(
-                                            'NodeParameter',
-                                            {
-                                                deviceName: deviceName,
-                                                parameterName: key,
-                                                nodeId: this.props.nodeId,
-                                            },
-                                        );
-                                    }}
-                                >
-                                    <Text style={styles.parameterValue}>{value.toString()}</Text>
-                                    <Text style={styles.parameterLabel}>{key}</Text>
-                                </TouchableOpacity>
+                                <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
                             );
-                    });
+                        });
 
-                    return (
-                        <View style={styles.nodeContainer}>
-                            <View style={styles.nodeHeader}>
-                                <Text style={styles.nodeTitle}>{deviceName}</Text>
-                                <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
+                        return (
+                            <View style={styles.nodeContainer}>
+                                <View style={styles.nodeHeader}>
+                                    <Text style={styles.nodeTitle}>{deviceName}</Text>
+                                    <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
+                                </View>
+                                <View style={styles.parametersContainer}>
+                                    {parameters}
+                                </View>
                             </View>
-                            <View style={styles.parametersContainer}>
-                                {parameters}
-                            </View>
-                        </View>
-                    )
-                }}
+                        )
+
+                    }
+                }
             </Consumer>
         );
     }
@@ -97,6 +84,7 @@ const styles = StyleSheet.create({
         padding: 4,
         margin: 4,
         borderRadius: 10,
+        elevation: 1,
     },
 
     nodeHeader: {

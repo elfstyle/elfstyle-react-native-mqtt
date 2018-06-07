@@ -5,7 +5,7 @@ import { Consumer } from '../ApplicationContext'
 import Node from '../components/Node'
 import { Button } from 'react-native-elements';
 
-class NodeParameterScreen extends React.Component {
+class NodeParameterDetailsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const deviceName = navigation.getParam('deviceName', '');
         const parameterName = navigation.getParam('parameterName', '');
@@ -116,7 +116,7 @@ class NodeParameterScreen extends React.Component {
     }
 }
 
-export default withNavigation(NodeParameterScreen);
+export default withNavigation(NodeParameterDetailsScreen);
 
 const styles = StyleSheet.create({
     Container: {

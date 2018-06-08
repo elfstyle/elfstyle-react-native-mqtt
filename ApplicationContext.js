@@ -24,7 +24,8 @@ export class Provider extends Component {
             console: [],
             gateways: {},
             nodes: {},
-            nodeDetails: {}
+            nodeDetails: {},
+            nodesElapsedTime: {},
         };
     }
 
@@ -198,13 +199,13 @@ export class Provider extends Component {
                     powerOn: ["Off", "On"]
                 }
             }
-            */        
+            */
             if (message.destinationName.startsWith('application') && message.destinationName.endsWith('details')) {
                 var nodeDetailsClone = Object.assign({}, this.state.nodeDetails);
                 nodeDetailsClone[payload.devEUI] = payload;
                 this.setState({ nodeDetails: nodeDetailsClone });
             }
-            
+
             this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
         }
         catch (e) {
@@ -261,6 +262,33 @@ export class Provider extends Component {
     //react lifecycle method
     componentDidMount = async () => {
         await this.connectMQTTClient();
+        this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
+    }
+
+    //get Node Elapsed time with NodeID
+    getNodeElapsedTime = (nodeID) => {
+        if (nodeID in this.state.nodesElapsedTime) {
+            return this.state.nodesElapsedTime[nodeID];
+        }
+        return '';
+    }
+
+    //calculation elpsed time from the last message for each Node 
+    calcElapsedTime = () => {
+        const nodeKeys = Object.keys(this.state.nodes);
+        nodeKeys.forEach(nodeID => {
+            try {
+                const nodeMessageTime = new Date(this.state.nodes[nodeID].rxInfo[0].time);
+                const timeDiff = Date.now() - nodeMessageTime.getTime();
+                const timeDiffString = timeDiff > 0 ? elapsedTimeToString(timeDiff) : '';
+                const newNodesElapsedTime = Object.assign({}, this.state.nodesElapsedTime);
+                newNodesElapsedTime[nodeID] = timeDiffString;
+                this.setState({ nodesElapsedTime: newNodesElapsedTime });
+            }
+            catch (e) {
+
+            }
+        });
     }
 
     //react lifecycle method
@@ -273,6 +301,7 @@ export class Provider extends Component {
                     getCurrentConfig: this.getCurrentConfig,
                     saveConfig: this.saveConfig,
                     sendMessage: this.sendMessage,
+                    getNodeElapsedTime: this.getNodeElapsedTime,
                 }
             }}>
                 {this.props.children}

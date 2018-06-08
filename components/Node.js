@@ -6,49 +6,21 @@ import { elapsedTimeToString } from '../src/utils'
 import NodeParameter from './NodeParameter'
 
 class Node extends Component {
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            elapsedTime: '',
-            messageTime: null,
-        }
-    }
-
-    componentDidMount = () => {
-        this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
-    }
-
-    calcElapsedTime = () => {
-        if (this.state.messageTime) {
-            const timeDiff = Date.now() - this.state.messageTime.getTime();
-            const timeDiffString = timeDiff > 0 ? elapsedTimeToString(timeDiff) : '';
-            this.setState({
-                elapsedTime: timeDiffString,
-            });
-        }
-    }
-
-    componentWillUnmount = () => {
-        clearTimeout(this.state.timer);
-    }
 
     render() {
         return (
             <Consumer>
                 {
-                    ({ state }) => {
+                    ({ state, actions }) => {
                         const nodePayload = state.nodes[this.props.nodeId];
+                        const nodeElapsedTime = actions.getNodeElapsedTime(this.props.nodeId);
+
                         const {
                             deviceName,
                             devEUI,
-                            rxInfo,
                             object
                         } = nodePayload;
 
-                        if (rxInfo) {
-                            this.state.messageTime = new Date(rxInfo[0].time);
-                        }
                         const objectKeys = Object.keys(object);
 
                         const parameters = objectKeys.map((key) => {
@@ -73,7 +45,7 @@ class Node extends Component {
                                     >
                                         <Text style={styles.nodeTitle}>{deviceName}</Text>
                                     </TouchableOpacity>
-                                    <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
+                                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
                                 </View>
                                 <View style={styles.parametersContainer}>
                                     {parameters}

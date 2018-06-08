@@ -60,7 +60,19 @@ class Node extends Component {
                         return (
                             <View style={styles.nodeContainer}>
                                 <View style={styles.nodeHeader}>
-                                    <Text style={styles.nodeTitle}>{deviceName}</Text>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            this.props.navigation.navigate(
+                                                'NodeDetails',
+                                                {
+                                                    deviceName: deviceName,
+                                                    nodeId: devEUI,
+                                                },
+                                            );
+                                        }}
+                                    >
+                                        <Text style={styles.nodeTitle}>{deviceName}</Text>
+                                    </TouchableOpacity>
                                     <Text style={styles.nodeElapsedTime}>{this.state.elapsedTime}</Text>
                                 </View>
                                 <View style={styles.parametersContainer}>

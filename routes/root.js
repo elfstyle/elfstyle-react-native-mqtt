@@ -8,6 +8,7 @@ import MQTTClientsScreen from '../screens/MQTTClientsScreen'
 import GatewaysScreen from '../screens/GatewaysScreen'
 import NodesScreen from '../screens/NodesScreen'
 import NodeParameterDetailsScreen from '../screens/NodeParameterDetailsScreen'
+import NodeDetailsScreen from '../screens/NodeDetailsScreen'
 import ConsoleScreen from '../screens/ConsoleScreen'
 import SettingsButton from '../components/SettingsButton'
 import HamburgerButton from '../components/HamburgerButton'
@@ -61,6 +62,9 @@ const HomeStack = createStackNavigator(
         },
         NodeParameterDetails: {
             screen: NodeParameterDetailsScreen,
+        },
+        NodeDetails: {
+            screen: NodeDetailsScreen,
         },
         ClientDetails: {
             screen: HomeTab,

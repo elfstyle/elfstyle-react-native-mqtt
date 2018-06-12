@@ -28,6 +28,7 @@ export default class extends React.PureComponent {
                                 clearIcon={{ type: 'font-awesome', name: 'times' }}
                                 placeholder='Type Here...' />
                             <FlatList
+                                removeClippedSubviews = {true}
                                 data={state.console.filter(
                                     (message)=>{
                                         return JSON.stringify(message).toUpperCase().includes(this.state.search.toUpperCase())

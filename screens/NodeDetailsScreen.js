@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, FlatList, View, ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation';
 import { Consumer } from '../ApplicationContext'
@@ -16,18 +17,11 @@ class NodeDetailsScreen extends React.Component {
         return (
             <Consumer>
                 {({ state, actions }) => {
-                    const nodeId = this.props.navigation.getParam('nodeId', '');
-                    const nodePayload = state.nodes[nodeId];
-
-                    const {
-                        deviceName,
-                        devEUI,
-                        rxInfo,
-                    } = nodePayload;
+                    const devEUI = this.props.navigation.getParam('devEUI', '');
 
                     return (
                         <ScrollView>
-                            <JSONTree data={nodePayload} theme={theme} isLightTheme={false}/>
+                            <JSONTree data={actions.getNodeObject(devEUI)} theme={theme} isLightTheme={false} />
                         </ScrollView>
                     )
                 }}
@@ -57,5 +51,4 @@ const theme = {
     base0D: '#66d9ef',
     base0E: '#ae81ff',
     base0F: '#cc6633'
-  };
-   
+};

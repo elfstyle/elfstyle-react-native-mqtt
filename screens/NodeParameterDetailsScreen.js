@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, FlatList, View } from 'react-native'
 import { withNavigation } from 'react-navigation';
 import { Consumer } from '../ApplicationContext'
+import NodeParameterControl from '../components/NodeParameterControl'
 import Node from '../components/Node'
 import { Button } from 'react-native-elements';
 
@@ -18,47 +19,19 @@ class NodeParameterDetailsScreen extends React.Component {
         return (
             <Consumer>
                 {({ state, actions }) => {
-                    const nodeId = this.props.navigation.getParam('nodeId', '');
-                    const parameterName = this.props.navigation.getParam('parameterName', '');
+                    const devEUI = this.props.navigation.getParam('devEUI', '');
+                    const parameter = this.props.navigation.getParam('parameter', '');
 
-                    const nodeElapsedTime = actions.getNodeElapsedTime(nodeId);
+                    const nodeElapsedTime = actions.getNodeElapsedTime(devEUI);
+                    const deviceName = actions.getDeviceName(devEUI);
+                    const parameterName = actions.getParameterName(devEUI, parameter);
+                    const parameterValue = actions.getParameterValue(devEUI, parameter);
+                    const parameterUnits = actions.getParameterUnits(devEUI, parameter);
 
-                    const nodePayload = state.nodes[nodeId];
-
-                    const {
-                        applicationID,
-                        deviceName,
-                        devEUI,
-                        rxInfo,
-                        object
-                    } = nodePayload;
-
-                    const value = object[parameterName].toString();
-
-                    // if object.control.parameterName exists then we can send control messages to device
-                    let Control;
-                    if ('control' in object)
-                        if (parameterName in object.control)
-                            Control = (
-                                <View style={styles.Container}>
-                                    <Button
-                                        title="OFF"
-                                        onPress={() => {
-                                            let messagePayload = {};
-                                            messagePayload[parameterName] = false;
-                                            actions.sendMessage(applicationID, devEUI, messagePayload);
-                                        }}
-                                    />
-                                    <Button
-                                        title="ON"
-                                        onPress={() => {
-                                            let messagePayload = {};
-                                            messagePayload[parameterName] = true;
-                                            actions.sendMessage(applicationID, devEUI, messagePayload);
-                                        }}
-                                    />
-                                </View>
-                            );
+                    const controlComponent = actions.getParameterControlEnabled(devEUI, parameter) ?
+                        <NodeParameterControl devEUI={devEUI} parameter={parameter} />
+                        :
+                        null;
 
                     return (
                         <React.Fragment>
@@ -67,7 +40,12 @@ class NodeParameterDetailsScreen extends React.Component {
                                     <Text style={styles.elapsedTime}>{nodeElapsedTime}</Text>
                                 </View>
                                 <View>
-                                    <Text style={styles.value}>{value}</Text>
+                                    <Text style={styles.value}>
+                                        {parameterValue}
+                                        <Text style={styles.parameterUnit}>
+                                            {parameterUnits}
+                                        </Text>
+                                    </Text>
                                 </View>
                                 <View style={styles.row}>
                                     <Text style={styles.title}>Device name:</Text>
@@ -78,7 +56,7 @@ class NodeParameterDetailsScreen extends React.Component {
                                     <Text style={styles.description}>{parameterName}</Text>
                                 </View>
                             </View>
-                            {Control}
+                            {controlComponent}
                         </React.Fragment>
                     )
                 }}
@@ -95,6 +73,7 @@ const styles = StyleSheet.create({
         padding: 4,
         margin: 4,
         borderRadius: 10,
+        elevation: 1,
     },
     elapsedTime: {
         color: 'gray',
@@ -108,6 +87,10 @@ const styles = StyleSheet.create({
         fontSize: 48,
         fontWeight: 'bold',
         textAlign: 'center',
+    },
+    parameterUnit: {
+        color: 'lightgrey',
+        fontSize: 24,
     },
     row: {
         flex: 1,

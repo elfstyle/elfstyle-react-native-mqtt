@@ -226,16 +226,39 @@ export class Provider extends Component {
                         0 Best effort (default).
                         1 At least once.
                         2 Exactly once.
-        retained	Boolean	If true, the message is to be retained by the server and delivered to both current and future subscriptions. If false the server only delivers the message to current subscribers, this is the default for new Messages. A received message has the retained boolean set to true if the message was published with the retained boolean set to true and the subscrption was made after the message has been published.
+        retained	Boolean	If true, the message is to be retained by the server and delivered to both current and future subscriptions. 
+                                    If false the server only delivers the message to current subscribers, 
+                                    this is the default for new Messages. A received message has the retained 
+                                    boolean set to true if the message was published with the retained boolean set to 
+                                    true and the subscrption was made after the message has been published.
+    ---------------------------------------------------------------------------------------------------------------------------
+    payload = 
+    {
+       "reference": "abcd1234",                  // reference which will be used on ack or error (this can be a random string)
+        "confirmed": true,                        // whether the payload must be sent as confirmed data down or not
+        "fPort": 10,                              // FPort to use (must be > 0)
+        "data": "...."                            // base64 encoded data (plaintext, will be encrypted by LoRa Server)
+        "object": {                               // decoded object (when application coded has been configured)
+            "temperatureSensor": {"1": 25},       // when providing the 'object', you can omit 'data'
+            "humiditySensor": {"1": 32}
+        }
+    }
     */
-    sendMessage = (applicationID, devEUI, payload) => {
-        payload.clientID = Constants.deviceId;
-
-        const topic = `application/${applicationID}/node/${devEUI}/tx`;
+    sendMessage = (devEUI, payload) => {
+        let message = {
+            reference: Constants.deviceId,
+            confirmed: true,
+            fPort: 1,
+            object: payload
+        };
 
         try {
+            const applicationID = this.state.nodes[devEUI].applicationID;
+
+            const topic = `application/${applicationID}/node/${devEUI}/tx`;
+
             if (this.state.client) {
-                this.state.client.send(topic, JSON.stringify(payload), 0, false);
+                this.state.client.send(topic, JSON.stringify(message), 0, false);
                 ToastAndroid.showWithGravity(
                     'Message sent',
                     ToastAndroid.LONG,
@@ -291,6 +314,137 @@ export class Provider extends Component {
         });
     }
 
+    /*
+    {
+        "devEUI": "68c63affffa547aa",
+        "deviceName": "Elevator",
+        "config": {
+            "temperature": {
+                "type": "number",
+                "range": [
+                    0,
+                    50
+                ],
+                "name": "Temperature",
+                "units": "°C",
+                "states": null
+            },
+            "humidity": {
+                "type": "number",
+                "range": [
+                        20,
+                        95
+                ],
+                "name": "Humidity",
+                "units": "%",
+                "states": null
+            }
+        }
+    }
+    */
+    getDeviceName = (devEUI) => {
+        let deviceName = '';
+        try {
+            if (devEUI in this.state.nodeDetails) {
+                deviceName = this.state.nodeDetails[devEUI].deviceName;
+            }
+            else if (devEUI in this.state.nodes) {
+                deviceName = this.state.nodes[devEUI].deviceName;
+            }
+        }
+        catch (e) { }
+        return deviceName;
+    }
+
+    getParameters = (devEUI) => {
+        let parameters;
+        try {
+            if (devEUI in this.state.nodes) {
+                parameters = Object.keys(this.state.nodes[devEUI].object);
+            }
+        }
+        catch (e) { }
+        return parameters;
+    }
+
+    getParameterName = (devEUI, parameter) => {
+        let parameterName = parameter;
+        try {
+            parameterName = this.state.nodeDetails[devEUI].config[parameter].name;
+        }
+        catch (e) { }
+        return parameterName;
+    }
+
+    getParameterValue = (devEUI, parameter) => {
+        let parameterValue = '';
+        try {
+            value = this.state.nodes[devEUI].object[parameter];
+            try {
+                const parameterConfig = this.state.nodeDetails[devEUI].config[parameter];
+                switch (parameterConfig.type) {
+                    case 'boolean':
+                        value = value ? parameterConfig.states[1] : parameterConfig.states[0];
+                        break;
+                    case 'number':
+                        value = value.toString();
+                        break;
+                }
+            }
+            catch (e) { }
+            parameterValue = value.toString();
+        }
+        catch (e) { }
+        return parameterValue;
+    }
+
+    getParameterUnits = (devEUI, parameter) => {
+        let parameterUnits;
+        try {
+            parameterUnits = this.state.nodeDetails[devEUI].config[parameter].units;
+        }
+        catch (e) { }
+        return parameterUnits;
+    }
+
+    getNodes = () => {
+        let nodes;
+        try {
+            nodes = Object.keys(this.state.nodes);
+        }
+        catch (e) { }
+        return nodes;
+    }
+
+    getNodeObject = (devEUI) => {
+        let node = {};
+        try {
+            node = this.state.nodes[devEUI];
+        }
+        catch (e) { }
+        return node;
+    }
+
+    getParameterControlEnabled = (devEUI, parameter) => {
+        let enabled = false;
+        try {
+            if (parameter in this.state.nodeDetails[devEUI].control) {
+                enabled = true;
+            }
+        }
+        catch (e) { }
+        return enabled;
+    }
+
+    getParameterControlStates = (devEUI, parameter) => {
+        let controlStates = ['Off', 'On'];
+        try {
+            controlStates = this.state.nodeDetails[devEUI].control[parameter];
+        }
+        catch (e) { }
+        return controlStates;
+    }
+
     //react lifecycle method
     render() {
         return (
@@ -302,6 +456,15 @@ export class Provider extends Component {
                     saveConfig: this.saveConfig,
                     sendMessage: this.sendMessage,
                     getNodeElapsedTime: this.getNodeElapsedTime,
+                    getDeviceName: this.getDeviceName,
+                    getParameters: this.getParameters,
+                    getParameterName: this.getParameterName,
+                    getParameterValue: this.getParameterValue,
+                    getParameterUnits: this.getParameterUnits,
+                    getNodes: this.getNodes,
+                    getNodeObject: this.getNodeObject,
+                    getParameterControlEnabled: this.getParameterControlEnabled,
+                    getParameterControlStates: this.getParameterControlStates,
                 }
             }}>
                 {this.props.children}

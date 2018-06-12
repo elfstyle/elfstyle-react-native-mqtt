@@ -14,47 +14,14 @@ class NodeParameter extends Component {
     render() {
         return (
             <Consumer>
-                {({ state }) => {
+                {({ state, actions }) => {
+                    const devEUI = this.props.devEUI;
+                    const parameter = this.props.parameter;
 
-                    const nodePayload = state.nodes[this.props.devEUI];
-                    const {
-                        deviceName,
-                        object
-                    } = nodePayload;
-
-                    //default values if details are not accessable
-                    let name = this.props.parameter;
-                    let value = object[this.props.parameter].toString();
-                    let units = '';
-
-                    /*
-                        {
-                            devEUI: "5cca7affff7c707e",
-                            devName: "Coditioner",
-                            config: {
-                                powerOn: {
-                                    type: "boolean",
-                                    name: "Power",
-                                    units: null,
-                                    states: ["Off", "On"]
-                                }
-                            },
-                            control: {
-                                powerOn: ["Off", "On"]
-                            }
-                        }
-                    */
-                    if (this.props.devEUI in state.nodeDetails) {
-                        const nodeDetails = state.nodeDetails[this.props.devEUI];
-                        if (this.props.parameter in nodeDetails.config) {
-                            parameterConfig = nodeDetails.config[this.props.parameter]
-                            name = parameterConfig.name;
-
-                        }
-                    }
-
-                    const nodeDetails = state.nodeDetails[this.props.devEUI];
-                    //const parameterConfig = nodeDetails.config[this.props.parameter];
+                    const deviceName = actions.getDeviceName(devEUI);
+                    const parameterName = actions.getParameterName(devEUI, parameter);
+                    const parameterValue = actions.getParameterValue(devEUI, parameter);
+                    const parameterUnits = actions.getParameterUnits(devEUI, parameter);
 
                     return (
                         <TouchableOpacity
@@ -64,14 +31,23 @@ class NodeParameter extends Component {
                                     'NodeParameterDetails',
                                     {
                                         deviceName: deviceName,
-                                        parameterName: this.props.parameter,
-                                        nodeId: this.props.devEUI,
+                                        parameterName: parameterName,
+                                        devEUI: devEUI,
+                                        parameter: parameter,
                                     },
                                 );
                             }}
                         >
-                            <Text style={styles.parameterValue}>{value}</Text>
-                            <Text style={styles.parameterLabel}>{name}</Text>
+
+                            <Text style={styles.parameterValue}>
+                                {parameterValue}
+                                <Text style={styles.parameterUnit}>
+                                    {parameterUnits}
+                                </Text>
+                            </Text>
+
+                            <Text style={styles.parameterLabel}>{parameterName}</Text>
+
                         </TouchableOpacity>
                     );
                 }}
@@ -86,9 +62,9 @@ const styles = StyleSheet.create({
 
     parameterContainer: {
         padding: 4,
-        margin: 0,
-        width: '33.33%',
-        maxWidth: 120,
+        marginLeft: 10,
+        marginRight: 10,
+        minWidth: 100,
         borderRadius: 4,
     },
 
@@ -99,12 +75,16 @@ const styles = StyleSheet.create({
     },
 
     parameterValue: {
-        backgroundColor: 'white',
         margin: 0,
         textAlign: 'center',
         color: 'black',
         fontSize: 28,
         fontWeight: 'bold',
+    },
+
+    parameterUnit: {
+        color: 'lightgrey',
+        fontSize: 14,
     }
 });
 

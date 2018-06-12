@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
 import { Consumer } from '../ApplicationContext'
@@ -6,24 +7,21 @@ import { elapsedTimeToString } from '../src/utils'
 import NodeParameter from './NodeParameter'
 
 class Node extends Component {
-
+    static propTypes = {
+        devEUI: PropTypes.string.isRequired,
+    }
     render() {
         return (
             <Consumer>
                 {
                     ({ state, actions }) => {
-                        const nodePayload = state.nodes[this.props.nodeId];
-                        const nodeElapsedTime = actions.getNodeElapsedTime(this.props.nodeId);
 
-                        const {
-                            deviceName,
-                            devEUI,
-                            object
-                        } = nodePayload;
+                        const devEUI = this.props.devEUI;
 
-                        const objectKeys = Object.keys(object);
+                        const nodeElapsedTime = actions.getNodeElapsedTime(devEUI);
+                        const deviceName = actions.getDeviceName(devEUI);
 
-                        const parameters = objectKeys.map((key) => {
+                        const parameters = actions.getParameters(devEUI).map((key) => {
                             return (
                                 <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
                             );
@@ -37,8 +35,8 @@ class Node extends Component {
                                             this.props.navigation.navigate(
                                                 'NodeDetails',
                                                 {
+                                                    devEUI: devEUI,
                                                     deviceName: deviceName,
-                                                    nodeId: devEUI,
                                                 },
                                             );
                                         }}

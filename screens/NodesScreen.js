@@ -11,13 +11,12 @@ export default class extends React.Component {
     render() {
         return (
             <Consumer>
-                {({ state }) => {
-                    const nodesArr = Object.keys(state.nodes);
+                {({ state, actions }) => {
                     return (
                         <FlatList
-                            data={nodesArr}
+                            data={actions.getNodes()}
                             renderItem={({ item }) => (
-                                <Node nodeId={item}/>
+                                <Node devEUI={item}/>
                             )}
                             keyExtractor={item => item}
                         />

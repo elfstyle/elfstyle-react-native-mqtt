@@ -39,13 +39,14 @@ class NodeParameter extends Component {
                             }}
                         >
 
-                            <Text style={styles.parameterValue}>
-                                {parameterValue}
+                            <View style={styles.valueContainer}>
+                                <Text style={styles.parameterValue}>
+                                    {parameterValue}
+                                </Text>
                                 <Text style={styles.parameterUnit}>
                                     {parameterUnits}
                                 </Text>
-                            </Text>
-
+                            </View>
                             <Text style={styles.parameterLabel}>{parameterName}</Text>
 
                         </TouchableOpacity>
@@ -68,13 +69,22 @@ const styles = StyleSheet.create({
         borderRadius: 4,
     },
 
+    valueContainer: {
+        //backgroundColor: "yellow",
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: "flex-end",
+    },
+
     parameterLabel: {
         color: 'darkgrey',
-        textAlign: 'center',
-        fontSize: 14,
+        fontSize: 16,
+        textAlign: "center",
     },
 
     parameterValue: {
+        //backgroundColor: "green",
         margin: 0,
         textAlign: 'center',
         color: 'black',
@@ -83,8 +93,11 @@ const styles = StyleSheet.create({
     },
 
     parameterUnit: {
+        //backgroundColor: "blue",
         color: 'lightgrey',
-        fontSize: 14,
+        fontSize: 20,
+        marginLeft: 3,
+        marginBottom: 3,      
     }
 });
 

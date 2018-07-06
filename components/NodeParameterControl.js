@@ -32,6 +32,7 @@ class NodeParameterControl extends Component {
                             <Button
                                 title={buttonTitle}
                                 buttonStyle={styles.button}
+                                textStyle={styles.buttonText}
                                 onPress={buttonAction}
                             />
                         </View>
@@ -54,10 +55,17 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 1,
     },
+
     button: {
         backgroundColor: "rgb(51, 153, 255)",
         margin: 5,
+        padding: 5,
         borderRadius: 10,
         elevation: 1,
     },
+
+    buttonText: {
+        fontSize: 24,
+    }
+
 });

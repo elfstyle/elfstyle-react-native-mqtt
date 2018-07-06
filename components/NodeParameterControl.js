@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Consumer } from '../ApplicationContext'
 import { Button } from 'react-native-elements'
 
@@ -13,34 +13,27 @@ class NodeParameterControl extends Component {
     render() {
         return (
             <Consumer>
-                {({ state, actions }) => {
+                {({ actions }) => {
                     const devEUI = this.props.devEUI;
                     const parameter = this.props.parameter;
 
+                    const parameterValueRaw = actions.getParameterValueRaw(devEUI, parameter);
+                    const parameterControlStates = actions.getParameterControlStates(devEUI, parameter);
+                    const buttonTitle = parameterValueRaw ? parameterControlStates[0] : parameterControlStates[1];
+                    const buttonAction = () => {
+                        let messagePayload = {};
+                        messagePayload[parameter] = !parameterValueRaw;
+                        actions.sendMessage(devEUI, messagePayload);
+                    };
 
                     return (
 
                         <View style={styles.container}>
-
                             <Button
-                                title={actions.getParameterControlStates(devEUI, parameter)[1]}
+                                title={buttonTitle}
                                 buttonStyle={styles.button}
-                                onPress={() => {
-                                    let messagePayload = {};
-                                    messagePayload[parameter] = true;
-                                    actions.sendMessage(devEUI, messagePayload);
-                                }}
+                                onPress={buttonAction}
                             />
-                            <Button
-                                title={actions.getParameterControlStates(devEUI, parameter)[0]}
-                                buttonStyle={styles.button}
-                                onPress={() => {
-                                    let messagePayload = {};
-                                    messagePayload[parameter] = false;
-                                    actions.sendMessage(devEUI, messagePayload);
-                                }}
-                            />
-
                         </View>
 
                     );

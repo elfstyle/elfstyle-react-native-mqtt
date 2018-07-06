@@ -3,7 +3,7 @@ import init from 'react_native_mqtt';
 import { AsyncStorage, ToastAndroid } from 'react-native';
 import { Constants } from 'expo';
 import Config from './src/Config';
-import ConsoleMessage from './src/ConsoleMessage'
+import ConsoleMessage from './src/ConsoleMessage';
 
 init({
     size: 10000,
@@ -377,6 +377,16 @@ export class Provider extends Component {
         return parameterName;
     }
 
+    //returns raw value of the parameter or null if parameter is undefined
+    getParameterValueRaw = (devEUI, parameter) => {
+        try {
+            return this.state.nodes[devEUI].object[parameter];
+        }
+        catch (e) { }
+        return null;
+    }
+
+    //returns string representation of the parameter value or empty string if parameter is undefined
     getParameterValue = (devEUI, parameter) => {
         let parameterValue = '';
         try {
@@ -460,6 +470,7 @@ export class Provider extends Component {
                     getDeviceName: this.getDeviceName,
                     getParameters: this.getParameters,
                     getParameterName: this.getParameterName,
+                    getParameterValueRaw: this.getParameterValueRaw,
                     getParameterValue: this.getParameterValue,
                     getParameterUnits: this.getParameterUnits,
                     getNodes: this.getNodes,

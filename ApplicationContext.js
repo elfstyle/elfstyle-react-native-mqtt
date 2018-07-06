@@ -3,6 +3,7 @@ import init from 'react_native_mqtt';
 import { AsyncStorage, ToastAndroid } from 'react-native';
 import { Constants } from 'expo';
 import Config from './src/Config';
+import ConsoleMessage from './src/ConsoleMessage'
 
 init({
     size: 10000,
@@ -474,14 +475,3 @@ export class Provider extends Component {
 }
 
 export const Consumer = ApplicationContext.Consumer;
-
-class ConsoleMessage {
-    static currentId = 0;
-    constructor(title, message = '') {
-        ConsoleMessage.currentId += 1;
-        this.id = ConsoleMessage.currentId;
-        this.title = title;
-        this.body = message;
-        this.dateTime = new Date();
-    }
-}

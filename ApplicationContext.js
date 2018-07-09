@@ -14,7 +14,7 @@ init({
 });
 
 const ApplicationContext = React.createContext();
-export class Provider extends Component {
+export class ApplicationProvider extends Component {
     constructor(props) {
         super(props)
 

@@ -1,11 +1,9 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
+import React, { Component } from 'react';
 import init from 'react_native_mqtt';
 import { AsyncStorage, ToastAndroid } from 'react-native';
-import { Constants } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/expo';
-import Config from './src/Config';
-import ConsoleMessage from './src/ConsoleMessage';
-import { connect } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-redux'
-import { getConfig } from './src/actions/configActions'
+import { Constants } from 'expo';
+import Config from './utils/Config';
+import ConsoleMessage from './components/ConsoleMessage';
 
 init({
     size: 10000,
@@ -17,7 +15,7 @@ init({
 
 const ApplicationContext = React.createContext();
 
-export class ApplicationProvider extends Component {
+class ApplicationProvider extends Component {
     constructor(props) {
         super(props)
 
@@ -488,4 +486,6 @@ export class ApplicationProvider extends Component {
     }
 }
 
-export const Consumer = ApplicationContext.Consumer;
+const Consumer = ApplicationContext.Consumer;
+
+export { ApplicationProvider, Consumer }

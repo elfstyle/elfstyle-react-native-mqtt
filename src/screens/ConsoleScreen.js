@@ -1,14 +1,18 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React from 'react'
 import Console from '../components/Console'
+import { Text } from 'react-native'
 
-export default class extends React.Component {
+class ConsoleScreen extends React.Component {
   static navigationOptions = {
     title: 'Console'
   }
 
   render() {
     return (
-      <Console />
+      <Text>ConsoleScreen</Text>
+  //    <Console />
     );
   }
 }
+
+export default ConsoleScreen;

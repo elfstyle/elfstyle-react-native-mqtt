@@ -1,7 +1,7 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
-import PropTypes from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React from 'react'
+import PropTypes from 'prop-types';
 import { StyleSheet, Text, FlatList, View, ScrollView } from 'react-native'
-import { withNavigation } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-navigation';
+import { withNavigation } from 'react-navigation';
 import { Consumer } from '../ApplicationContext'
 import JSONTree from 'react-native-json-tree'
 

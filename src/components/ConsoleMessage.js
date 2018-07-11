@@ -1,8 +1,7 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React, { Component } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { Badge } from 'react-native-elements'
 
-export default class extends React.PureComponent {
+ class ConsoleMessage extends React.PureComponent {
     render() {
         const { dateTime, title, body } = this.props.message;
         const dateTimeString = dateTime.toISOString().replace(/[A-Z]/g, " ");
@@ -17,6 +16,8 @@ export default class extends React.PureComponent {
         )
     }
 }
+
+export default ConsoleMessage;
 
 const styles = StyleSheet.create({
     record: {

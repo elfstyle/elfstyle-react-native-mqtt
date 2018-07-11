@@ -1,4 +1,4 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React from 'react'
 import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 'react-native'
 import { Divider, Button } from 'react-native-elements'
 import { Consumer } from '../ApplicationContext'
@@ -6,7 +6,7 @@ import SettingInput from '../components/SettingInput'
 import ViewWithKeyboard from '../components/ViewWithKeyboard'
 
 
-export default class extends React.Component {
+class SettingsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
         return {
@@ -39,19 +39,20 @@ export default class extends React.Component {
             <Consumer>
                 {
                     ({ state, actions }) => {
-                        //if this code is running first time, then init config state from context
-                        if (!this.state.config) {
-                            this.state.config = state.currentConfig;
-                        }
+                        // //if this code is running first time, then init config state from context
+                        // if (!this.state.config) {
+                        //     this.state.config = state.currentConfig;
+                        // }
 
-                        //attach saveConfig function to Settings screen
-                        this.saveConfig = actions.saveConfig;
+                        // //attach saveConfig function to Settings screen
+                        // this.saveConfig = actions.saveConfig;
 
-                        const configKeys = Object.keys(this.state.config);
+                        // const configKeys = Object.keys(this.state.config);
 
                         return (
                             <ViewWithKeyboard>
-                                <FlatList
+                                <Text>SettingsScreen</Text>
+                                {/* <FlatList
                                     data={configKeys}
                                     renderItem={({ item }) => (
                                         <View style={styles.row}>
@@ -69,7 +70,7 @@ export default class extends React.Component {
                                     )}
                                     keyExtractor={item => item}
                                     ItemSeparatorComponent={() => <Divider style={{ backgroundColor: 'lightgray', width: StyleSheet.hairlineWidth }} />}
-                                />
+                                /> */}
                             </ViewWithKeyboard>
                         )
                     }
@@ -79,11 +80,7 @@ export default class extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    config: state.config
-});
-
-export default connect(mapStateToProps, { getConfig })(SettingsScreen);
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
     row: {

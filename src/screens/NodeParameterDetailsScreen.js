@@ -1,6 +1,6 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React from 'react'
 import { StyleSheet, Text, FlatList, View } from 'react-native'
-import { withNavigation } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-navigation';
+import { withNavigation } from 'react-navigation';
 import { Consumer } from '../ApplicationContext'
 import NodeParameterControl from '../components/NodeParameterControl'
 import Node from '../components/Node'

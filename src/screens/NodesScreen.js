@@ -1,9 +1,9 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React from 'react'
 import { Text, FlatList } from 'react-native'
 import { Consumer } from '../ApplicationContext'
 import Node from '../components/Node'
 
-export default class extends React.Component {
+class NodesScreen extends React.Component {
     static navigationOptions = {
         title: 'Nodes'
     }
@@ -13,16 +13,19 @@ export default class extends React.Component {
             <Consumer>
                 {({ state, actions }) => {
                     return (
-                        <FlatList
-                            data={actions.getNodes()}
-                            renderItem={({ item }) => (
-                                <Node devEUI={item}/>
-                            )}
-                            keyExtractor={item => item}
-                        />
+                        <Text>NodesScreen</Text>
+                        // <FlatList
+                        //     data={actions.getNodes()}
+                        //     renderItem={({ item }) => (
+                        //         <Node devEUI={item}/>
+                        //     )}
+                        //     keyExtractor={item => item}
+                        // />
                     )
                 }}
             </Consumer>
         );
     }
 }
+
+export default NodesScreen;

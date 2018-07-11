@@ -1,7 +1,7 @@
 {
   "expo": {
    "name": "Elfstyle MQTT Client",
-   "icon": "./src/icon.png",
+   "icon": "./src/assets/icon.png",
    "version": "1.0.0",
    "slug": "elfstyle-react-native-mqtt",
    "sdkVersion": "27.0.0",

@@ -1,4 +1,4 @@
-import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import React from 'react'
 import { View, Keyboard } from 'react-native'
 
 export default class extends React.Component {

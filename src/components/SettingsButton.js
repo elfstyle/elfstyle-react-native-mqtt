@@ -1,6 +1,5 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
-import { Button, Icon } from 'react-native-elements'
-import { withNavigation } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-navigation';
+import React, { Component } from 'react'
+import { Icon } from 'react-native-elements'
 
 class SettingsButton extends Component {
     render() {

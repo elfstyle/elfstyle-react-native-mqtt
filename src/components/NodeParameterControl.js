@@ -1,5 +1,5 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
-import PropTypes from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { Consumer } from '../ApplicationContext'
 import { Button } from 'react-native-elements'

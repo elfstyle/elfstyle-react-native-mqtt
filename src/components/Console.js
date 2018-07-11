@@ -1,4 +1,4 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
+import React, { Component } from 'react';
 import { FlatList, Text } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 import ConsoleMessage from './ConsoleMessage'

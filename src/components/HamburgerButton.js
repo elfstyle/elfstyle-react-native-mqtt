@@ -1,7 +1,7 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
-import { Button, Icon } from 'react-native-elements'
+import React, { Component } from 'react'
+import { Icon } from 'react-native-elements'
 
-export default class extends Component {
+class HamburgerButton extends Component {
     render() {
         return (
             <Icon
@@ -15,3 +15,5 @@ export default class extends Component {
         )
     }
 }
+
+export default HamburgerButton;

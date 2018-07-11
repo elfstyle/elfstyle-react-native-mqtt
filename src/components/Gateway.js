@@ -1,5 +1,5 @@
-import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { Text } from 'react-native';
 import { Card } from 'react-native-elements';
 import { Consumer } from '../ApplicationContext'
 

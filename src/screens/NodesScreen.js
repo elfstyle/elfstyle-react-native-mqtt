@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
 import { Text, FlatList } from 'react-native'
 import { Consumer } from '../ApplicationContext'
 import Node from '../components/Node'

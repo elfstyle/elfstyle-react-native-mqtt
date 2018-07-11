@@ -1,15 +1,13 @@
-import React from 'react'
-import { createStackNavigator, createMaterialTopTabNavigator, createDrawerNavigator } from 'react-navigation'
-import { Button, Icon } from 'react-native-elements'
+import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
+import { createStackNavigator, createMaterialTopTabNavigator, createDrawerNavigator } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-navigation'
 
 import SettingsScreen from '../screens/SettingsScreen'
 import CommunicationScreen from '../screens/CommunicationScreen'
-import MQTTClientsScreen from '../screens/MQTTClientsScreen'
-import GatewaysScreen from '../screens/GatewaysScreen'
 import NodesScreen from '../screens/NodesScreen'
 import NodeParameterDetailsScreen from '../screens/NodeParameterDetailsScreen'
 import NodeDetailsScreen from '../screens/NodeDetailsScreen'
 import ConsoleScreen from '../screens/ConsoleScreen'
+
 import SettingsButton from '../components/SettingsButton'
 import HamburgerButton from '../components/HamburgerButton'
 

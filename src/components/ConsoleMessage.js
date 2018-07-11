@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
 import { StyleSheet, View, Text } from 'react-native'
 import { Badge } from 'react-native-elements'
 

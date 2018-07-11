@@ -1,9 +1,10 @@
-import React from 'react'
+import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
 import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 'react-native'
 import { Divider, Button } from 'react-native-elements'
 import { Consumer } from '../ApplicationContext'
 import SettingInput from '../components/SettingInput'
 import ViewWithKeyboard from '../components/ViewWithKeyboard'
+
 
 export default class extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -77,6 +78,12 @@ export default class extends React.Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    config: state.config
+});
+
+export default connect(mapStateToProps, { getConfig })(SettingsScreen);
 
 const styles = StyleSheet.create({
     row: {

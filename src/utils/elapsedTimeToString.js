@@ -1,4 +1,4 @@
-elapsedTimeToString = (ms) => {
+function elapsedTimeToString (ms) {
     try {
         const sec = Math.floor(ms / 1000);
         // Calculate the number of days left
@@ -15,6 +15,4 @@ elapsedTimeToString = (ms) => {
     }
 }
 
-export {
-    elapsedTimeToString
-}
+export default elapsedTimeToString;

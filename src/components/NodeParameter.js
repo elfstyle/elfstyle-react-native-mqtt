@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react';
+import PropTypes from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/prop-types';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import { withNavigation } from 'react-navigation';
+import { withNavigation } from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react-navigation';
 import { Consumer } from '../ApplicationContext'
 import { elapsedTimeToString } from '../src/utils'
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'C:/Users/shiva/AppData/Local/Microsoft/TypeScript/2.9/node_modules/@types/react'
 import { Text, TextInput, Switch, StyleSheet } from 'react-native'
 
 export default class SettingInput extends React.Component {

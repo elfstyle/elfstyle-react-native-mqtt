@@ -24,7 +24,7 @@ class ApplicationProvider extends Component {
     }
 
     //react lifecycle method
-    componentDidMount = async () => {
+    componentDidMount = () => {
         debugLog('componentDidMount');
         getCurrentConfig()
             .then((config) => {

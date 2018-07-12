@@ -4,26 +4,20 @@ import { debugLog } from '../utils'
 
 //tries to receive current config from AsyncStorage and combine it with 
 //default config object
+
 function getCurrentConfig() {
     return new Promise((resolve, reject) => {
-        debugLog('getCurrentConfig');
-        //default configuration
-        let defaultConfig = new DefaultConfig();
+        AsyncStorage.getItem('Config')
+            .then(storedConfigString => {
 
-        let storedConfig = {};
+                if (storedConfigString) {
+                    storedConfig = JSON.parse(storedConfigString);
+                }
+                let currentConfig = Object.assign(new DefaultConfig(), storedConfig);
 
-        try {
-            const storedConfigString = AsyncStorage.getItem('Config');
-            if (storedConfigString) {
-                storedConfig = JSON.parse(storedConfigString);
-            }
-        } catch (error) {
-            resolve(defaultConfig);
-        }
-
-        let currentConfig = Object.assign(defaultConfig, storedConfig);
-
-        resolve(currentConfig);
+                resolve(currentConfig);
+            })
+            .catch(() => resolve(new DefaultConfig()));
     });
 }
 

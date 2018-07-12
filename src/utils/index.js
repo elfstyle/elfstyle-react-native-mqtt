@@ -4,7 +4,6 @@ import consoleLog from './consoleLog'
 import debugLog from './debugLog'
 import elapsedTimeToString from './elapsedTimeToString'
 import getCurrentConfig from './getCurrentConfig'
-import handleOnConnect from './handleOnConnect'
 import handleOnConnectionLost from './handleOnConnectionLost'
 import handleOnFailure from './handleOnFailure'
 import handleOnMessageArrived from './handleOnMessageArrived'
@@ -18,7 +17,6 @@ export {
     debugLog,
     elapsedTimeToString,
     getCurrentConfig,
-    handleOnConnect,
     handleOnConnectionLost,
     handleOnFailure,
     handleOnMessageArrived,

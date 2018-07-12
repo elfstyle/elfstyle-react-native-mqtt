@@ -1,6 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import init from 'react_native_mqtt';
 import { Constants } from 'expo';
+import {
+    debugLog,   
+    handleOnConnectionLost,
+    handleOnFailure,
+    handleOnMessageArrived,
+} from '../utils'
 
 init({
     size: 10000,
@@ -11,14 +17,29 @@ init({
 });
 
 //connection of MQTT Client with config 
-function connectMQTTClient(config, cbOnConnect, cbOnMessageArrived, cbOnFailure, cbOnConnectionLost) {
+function connectMQTTClient(
+    config,
+    cbOnMessageArrived = handleOnMessageArrived,
+    cbOnFailure = handleOnFailure,
+    cbOnConnectionLost = handleOnConnectionLost) {
+
     return new Promise((resolve, reject) => {
         try {
+            debugLog('connectMQTTClient');
             const client = new Paho.MQTT.Client('127.0.0.1', 8080, Constants.deviceId);
+
+            let handleOnConnectLocal = () => {
+                debugLog('handleOnConnect');
+               
+                client.subscribe('gateway/+/stats');
+                client.subscribe('application/+/node/#', { qos: 1 });
+            };
+
             client.onConnectionLost = cbOnConnectionLost;
             client.onMessageArrived = cbOnMessageArrived;
             client.connect({
-                onSuccess: cbOnConnect,
+                //onSuccess: cbOnConnect.bind(client),
+                onSuccess: handleOnConnectLocal,
                 onFailure: cbOnFailure,
                 useSSL: config.useSSL,
                 reconnect: config.reconnect,

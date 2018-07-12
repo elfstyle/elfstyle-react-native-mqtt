@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { ToastAndroid } from 'react-native';
 import {
     debugLog,
-    getCurrentConfig
+    getCurrentConfig,
+    connectMQTTClient,
 } from './utils'
 
 const ApplicationContext = React.createContext();
@@ -28,7 +29,8 @@ class ApplicationProvider extends Component {
         debugLog('componentDidMount');
         getCurrentConfig()
             .then((config) => {
-                debugLog(JSON.stringify(config))
+                debugLog(JSON.stringify(config)),
+                connectMQTTClient(config)
             });
         //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
     }

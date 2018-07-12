@@ -1,4 +1,4 @@
-import { debugLog } from '../utils'
+import { debugLog } from '.'
 
 //called when the connect request has failed or timed out. A single response object parameter is passed to the onFailure callback containing the following fields:
 //      invocationContext as passed in to the onFailure method in the connectOptions.

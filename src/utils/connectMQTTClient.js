@@ -6,7 +6,7 @@ import {
     handleOnConnectionLost,
     handleOnFailure,
     handleOnMessageArrived,
-} from '../utils'
+} from '.'
 
 init({
     size: 10000,

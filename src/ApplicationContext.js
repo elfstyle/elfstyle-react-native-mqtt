@@ -11,17 +11,6 @@ const ApplicationContext = React.createContext();
 class ApplicationProvider extends Component {
     constructor(props) {
         super(props)
-
-        this.state = {
-            currentConfig: {},
-            client: null,
-            connected: false,
-            console: [],
-            gateways: {},
-            nodes: {},
-            nodeDetails: {},
-            nodesElapsedTime: {},
-        };
     }
 
     //react lifecycle method

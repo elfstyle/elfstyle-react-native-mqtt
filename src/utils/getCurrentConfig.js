@@ -1,11 +1,12 @@
 import { AsyncStorage } from 'react-native';
 import DefaultConfig from '../classes/Config'
-import { debugLog } from '../utils'
+import { debugLog } from '.'
 
 //tries to receive current config from AsyncStorage and combine it with 
 //default config object
 
 function getCurrentConfig() {
+    debugLog('getCurrentConfig');
     return new Promise((resolve, reject) => {
         AsyncStorage.getItem('Config')
             .then(storedConfigString => {

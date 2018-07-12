@@ -1,6 +1,9 @@
 import { } from '../types'
 
-const initialState = {}
+const initialState = {
+    ref: null,
+    connected: false,
+}
 
 export default function (state = initialState, action) {
     switch (action.type) {

@@ -1,4 +1,4 @@
-import { debugLog } from '../utils'
+import { debugLog } from '.'
 
 //fires when Connection lost
 handleOnConnectionLost = responseObject => {

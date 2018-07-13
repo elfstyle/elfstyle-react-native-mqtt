@@ -1,26 +1,25 @@
-import React, { Component } from 'react';
-import { ToastAndroid } from 'react-native';
+import React, { Component } from 'react'
+import { ToastAndroid } from 'react-native'
 import {
     debugLog,
     getCurrentConfig,
     connectMQTTClient,
-} from './utils'
+    subscribeMQTT,
+} from './core'
+import subscriptions from './configs/subscriptions'
 
 const ApplicationContext = React.createContext();
 
 class ApplicationProvider extends Component {
-    constructor(props) {
-        super(props)
-    }
 
     //react lifecycle method
     componentDidMount = () => {
         debugLog('componentDidMount');
+
         getCurrentConfig()
-            .then((config) => {
-                debugLog(JSON.stringify(config)),
-                connectMQTTClient(config)
-            });
+            .then(config => connectMQTTClient(config))
+            .then(client => subscribeMQTT(client, subscriptions));
+
         //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
     }
 

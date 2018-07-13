@@ -9,6 +9,7 @@ import handleOnFailure from './handleOnFailure'
 import handleOnMessageArrived from './handleOnMessageArrived'
 import saveConfig from './saveConfig'
 import sendMQTTMessage from './sendMQTTMessage'
+import subscribeMQTT from './subscribeMQTT'
 
 export {
     calcElapsedTime,
@@ -22,4 +23,5 @@ export {
     handleOnMessageArrived,
     saveConfig,
     sendMQTTMessage,
+    subscribeMQTT,
 }

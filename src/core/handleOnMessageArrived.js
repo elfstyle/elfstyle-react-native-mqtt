@@ -1,4 +1,4 @@
-import { debugLog } from '../utils'
+import { debugLog } from '.'
 
 function handleOnMessageArrived (message)  {
     debugLog('handleOnMessageArrived', message.payloadString);

@@ -1,11 +1,13 @@
-import { } from '../types'
+import store from '../store'
+import { NODEDETAILS_ADD } from '../types'
 
-export const action = () => dispath => {
+export function nodeDetaisAdd(payload) {
+    return {
+        type: NODEDETAILS_ADD,
+        payload
+    }
+}
 
-    dispatch(
-        {
-            type: "",
-            payload: {}
-        }
-    );
+export function storeNodeDetailsAdd(payload) {
+    store.dispatch(nodeDetaisAdd(payload));
 }

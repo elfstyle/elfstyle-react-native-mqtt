@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
@@ -10,54 +11,52 @@ class Node extends Component {
         devEUI: PropTypes.string.isRequired,
     }
     render() {
+
+        const devEUI = this.props.devEUI;
+
+        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+        const deviceName = devEUI;//actions.getDeviceName(devEUI);
+
+        // const parameters = actions.getParameters(devEUI).map((key) => {
+        //     return (
+        //         <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
+        //     );
+        // });
+
         return (
-            <Consumer>
-                {
-                    ({ state, actions }) => {
-
-                        const devEUI = this.props.devEUI;
-
-                        const nodeElapsedTime = actions.getNodeElapsedTime(devEUI);
-                        const deviceName = actions.getDeviceName(devEUI);
-
-                        const parameters = actions.getParameters(devEUI).map((key) => {
-                            return (
-                                <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
+            <View style={styles.nodeContainer}>
+                <View style={styles.nodeHeader}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.navigation.navigate(
+                                'NodeDetails',
+                                {
+                                    devEUI: devEUI,
+                                    deviceName: deviceName,
+                                },
                             );
-                        });
-
-                        return (
-                            <View style={styles.nodeContainer}>
-                                <View style={styles.nodeHeader}>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            this.props.navigation.navigate(
-                                                'NodeDetails',
-                                                {
-                                                    devEUI: devEUI,
-                                                    deviceName: deviceName,
-                                                },
-                                            );
-                                        }}
-                                    >
-                                        <Text style={styles.nodeTitle}>{deviceName}</Text>
-                                    </TouchableOpacity>
-                                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
-                                </View>
-                                <View style={styles.parametersContainer}>
-                                    {parameters}
-                                </View>
-                            </View>
-                        )
-
-                    }
-                }
-            </Consumer>
-        );
+                        }}
+                    >
+                        <Text style={styles.nodeTitle}>{deviceName}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
+                </View>
+                <View style={styles.parametersContainer}>
+                    {/* {parameters} */}
+                </View>
+            </View>
+        )
     }
 }
 
-export default withNavigation(Node);
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+        nodeDetails: state.nodeDetails,
+    }
+};
+
+export default connect(mapStateToProps, null)(withNavigation(Node));
 
 const styles = StyleSheet.create({
     nodeContainer: {
@@ -120,40 +119,3 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     }
 });
-
-/*
-{
-    "applicationID": "2",
-    "applicationName": "Climate",
-    "deviceName": "Elevator",
-    "devEUI": "68c63affffa547aa",
-                    "rxInfo": [
-                        {
-                            "mac": "b827ebfffe688fd7",
-                            "time": "2018-05-25T07:25:55.266866Z",
-                            "rssi": -41,
-                            "loRaSNR": 7.2,
-                            "name": "RPi-RAK831-GW",
-                            "latitude": 49.9835,
-                            "longitude": 36.21126,
-                            "altitude": 99
-                        }
-                    ],
-                        "txInfo": {
-        "frequency": 868500000,
-            "dataRate": {
-            "modulation": "LORA",
-                "bandwidth": 125,
-                    "spreadFactor": 7
-        },
-        "adr": false,
-            "codeRate": "4/5"
-    },
-    "fCnt": 146,
-        "fPort": 1,
-            "data": "W1Q9MjYuMDJnci5DXVtIPTUwLjA1JV1bVXQ9NTM5OHNdW0R0PTM3c10=",
-                "object": {
-        "msg": "[T=26.02gr.C][H=50.05%][Ut=5398s][Dt=37s]"
-    }
-}
-*/

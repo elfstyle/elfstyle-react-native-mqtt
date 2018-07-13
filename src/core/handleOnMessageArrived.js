@@ -1,5 +1,6 @@
-import store from '../store'
-import { gatewaysAdd } from '../actions/gatewaysActions'
+import { storeGatewaysAdd } from '../actions/gatewaysActions'
+import { storeNodesAdd } from '../actions/nodesActions'
+import { storeNodeDetailsAdd } from '../actions/nodeDetailsActions'
 import {
     debugLog,
     consoleLog
@@ -14,40 +15,19 @@ function handleOnMessageArrived(message) {
 
         //populating state.gateways
         if (message.destinationName.startsWith('gateway')) {
-            store.dispatch(gatewaysAdd(payload));
+            storeGatewaysAdd(payload);
         }
 
         //populating state.nodes object
         if (message.destinationName.startsWith('application') && message.destinationName.endsWith('rx')) {
             if (payload.object) {
-                //var nodesClone = Object.assign({}, this.state.nodes);
-                //nodesClone[payload.devEUI] = payload;
-                //this.setState({ nodes: nodesClone });
+                storeNodesAdd(payload);
             }
         }
 
         //populating state.nodeDetails object
-        /*
-        {
-            devEUI: "5cca7affff7c707e",
-            devName: "Coditioner",
-            config: {
-                powerOn: {
-                    type: "boolean",
-                    name: "Power",
-                    units: null,
-                    states: ["Off", "On"]
-                }
-            },
-            control: {
-                powerOn: ["Off", "On"]
-            }
-        }
-        */
         if (message.destinationName.startsWith('application') && message.destinationName.endsWith('details')) {
-            //var nodeDetailsClone = Object.assign({}, this.state.nodeDetails);
-            //nodeDetailsClone[payload.devEUI] = payload;
-            //this.setState({ nodeDetails: nodeDetailsClone });
+            storeNodeDetailsAdd(payload);
         }
 
         consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);

@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Text, FlatList } from 'react-native'
 import { Consumer } from '../ApplicationContext'
 import Node from '../components/Node'
@@ -9,23 +10,24 @@ class NodesScreen extends React.Component {
     }
 
     render() {
+        const nodes = this.props.nodes;
+        const nodesKeyArray = Object.keys(nodes);
         return (
-            <Consumer>
-                {({ state, actions }) => {
-                    return (
-                        <Text>NodesScreen</Text>
-                        // <FlatList
-                        //     data={actions.getNodes()}
-                        //     renderItem={({ item }) => (
-                        //         <Node devEUI={item}/>
-                        //     )}
-                        //     keyExtractor={item => item}
-                        // />
-                    )
-                }}
-            </Consumer>
-        );
+            <FlatList
+                data={nodesKeyArray}
+                renderItem={({ item }) => (
+                    <Node devEUI={item} />
+                )}
+                keyExtractor={item => item}
+            />
+        )
     }
 }
 
-export default NodesScreen;
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+    }
+};
+
+export default connect(mapStateToProps, null)(NodesScreen);

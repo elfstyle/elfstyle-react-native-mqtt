@@ -21,9 +21,11 @@ class ApplicationProvider extends Component {
     }
 
     performConnectionProcedure = () => {
-        consoleLog('performConnectionProcedure');
         getCurrentConfig()
-            .then(config => connectMQTTClient(config))
+            .then(config => {
+                consoleLog("Connected", JSON.stringify(config));
+                return connectMQTTClient(config);
+            })
             .then(client => subscribeMQTT(client, subscriptions));
     }
 

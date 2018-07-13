@@ -1,1 +1,2 @@
 export const CONSOLE_ADD_RECORD = 'CONSOLE_ADD_RECORD';
+export const GATEWAYS_ADD = 'GATEWAYS_ADD';

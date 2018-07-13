@@ -1,58 +1,63 @@
-import { debugLog } from '.'
+import store from '../store'
+import { gatewaysAdd } from '../actions/gatewaysActions'
+import {
+    debugLog,
+    consoleLog
+} from '.'
 
-function handleOnMessageArrived (message)  {
+function handleOnMessageArrived(message) {
     debugLog('handleOnMessageArrived', message.payloadString);
-    // let payload;
+    let payload;
 
-    // try {
-    //     payload = JSON.parse(message.payloadString);
+    try {
+        payload = JSON.parse(message.payloadString);
 
-    //     //populating state.gateways object
-    //     if (message.destinationName.startsWith('gateway')) {
-    //         var gatewaysClone = Object.assign({}, this.state.gateways);
-    //         gatewaysClone[payload.mac] = payload;
-    //         //this.setState({ gateways: gatewaysClone });
-    //     }
+        //populating state.gateways
+        if (message.destinationName.startsWith('gateway')) {
+            store.dispatch(gatewaysAdd(payload));
+        }
 
-    //     //populating state.nodes object
-    //     if (message.destinationName.startsWith('application') && message.destinationName.endsWith('rx')) {
-    //         if (payload.object) {
-    //             var nodesClone = Object.assign({}, this.state.nodes);
-    //             nodesClone[payload.devEUI] = payload;
-    //             //this.setState({ nodes: nodesClone });
-    //         }
-    //     }
+        //populating state.nodes object
+        if (message.destinationName.startsWith('application') && message.destinationName.endsWith('rx')) {
+            if (payload.object) {
+                //var nodesClone = Object.assign({}, this.state.nodes);
+                //nodesClone[payload.devEUI] = payload;
+                //this.setState({ nodes: nodesClone });
+            }
+        }
 
-    //     //populating state.nodeDetails object
-    //     /*
-    //     {
-    //         devEUI: "5cca7affff7c707e",
-    //         devName: "Coditioner",
-    //         config: {
-    //             powerOn: {
-    //                 type: "boolean",
-    //                 name: "Power",
-    //                 units: null,
-    //                 states: ["Off", "On"]
-    //             }
-    //         },
-    //         control: {
-    //             powerOn: ["Off", "On"]
-    //         }
-    //     }
-    //     */
-    //     if (message.destinationName.startsWith('application') && message.destinationName.endsWith('details')) {
-    //         var nodeDetailsClone = Object.assign({}, this.state.nodeDetails);
-    //         nodeDetailsClone[payload.devEUI] = payload;
-    //         //this.setState({ nodeDetails: nodeDetailsClone });
-    //     }
+        //populating state.nodeDetails object
+        /*
+        {
+            devEUI: "5cca7affff7c707e",
+            devName: "Coditioner",
+            config: {
+                powerOn: {
+                    type: "boolean",
+                    name: "Power",
+                    units: null,
+                    states: ["Off", "On"]
+                }
+            },
+            control: {
+                powerOn: ["Off", "On"]
+            }
+        }
+        */
+        if (message.destinationName.startsWith('application') && message.destinationName.endsWith('details')) {
+            //var nodeDetailsClone = Object.assign({}, this.state.nodeDetails);
+            //nodeDetailsClone[payload.devEUI] = payload;
+            //this.setState({ nodeDetails: nodeDetailsClone });
+        }
 
-    //     //this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
-    // }
-    // catch (e) {
-    //     // this.consoleLog(`${message.destinationName} QoS: ${message.qos} `, `can't parse payloadString 
-    //     // ${message.payloadString}`);
-    // }
+        consoleLog(`${message.destinationName} QoS: ${message.qos} `, message.payloadString);
+    }
+    catch (e) {
+        consoleLog(
+            `${message.destinationName} QoS: ${message.qos} `,
+            `can't parse payloadString ${message.payloadString}`
+        );
+    }
 };
 
 export default handleOnMessageArrived;

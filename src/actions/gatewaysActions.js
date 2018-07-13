@@ -1,11 +1,8 @@
-import { } from '../types'
+import { GATEWAYS_ADD } from '../types'
 
-export const action = () => dispath => {
-
-    dispatch(
-        {
-            type: "",
-            payload: {}
-        }
-    );
+export function gatewaysAdd(payload) {
+    return {
+        type: GATEWAYS_ADD,
+        payload
+    }
 }

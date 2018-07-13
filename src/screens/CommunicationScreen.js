@@ -1,6 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Text, FlatList } from 'react-native'
-import { Consumer } from '../ApplicationContext'
 import Gateway from '../components/Gateway'
 import MQTTClient from '../components/MQTTClient'
 
@@ -10,25 +10,24 @@ class CommunicationScreen extends React.Component {
     }
 
     render() {
+        const gateways = this.props.gateways;
+        const gatewaysKeyArray = Object.keys(gateways);
         return (
-            <Consumer>
-                {({ state }) => {
-                    // const gatewaysArr = Object.keys(state.gateways)
-                    return (         
-                        <Text>CommunicationScreen</Text>              
-                        // <FlatList
-                        //     data={gatewaysArr}
-                        //     ListHeaderComponent={<MQTTClient />}
-                        //     renderItem={({ item }) => (
-                        //         <Gateway gatewayId={item} />
-                        //     )}
-                        //     keyExtractor={item => item}
-                        // />
-                    )
-                }}
-            </Consumer>
+            <FlatList
+                data={gatewaysKeyArray}
+                renderItem={({ item }) => (
+                    <Gateway gatewayObj={gateways[item]} />
+                )}
+                keyExtractor={item => item}
+            />
         );
     }
 }
 
-export default CommunicationScreen;
+const mapStateToProps = state => {
+    return {
+        gateways: state.gateways,
+    }
+};
+
+export default connect(mapStateToProps, null)(CommunicationScreen);

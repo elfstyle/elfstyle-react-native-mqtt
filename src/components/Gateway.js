@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import { Text } from 'react-native';
 import { Card } from 'react-native-elements';
-import { Consumer } from '../ApplicationContext'
 
-export default class extends Component {
-
+class Gateway extends Component {
     render() {
+        const gatewayObj = this.props.gatewayObj;
         return (
-            <Consumer>
-                {({ state }) => {
-                    const gatewayPayload = state.gateways[this.props.gatewayId];
-                    return (
-                        <Card title="Gateway">
-                            <Text>Gateway Id: {gatewayPayload.mac}</Text>
-                            <Text>Time: {gatewayPayload.time}</Text>
-                            <Text>rxPacketsReceived: {gatewayPayload.rxPacketsReceived}</Text>
-                            <Text>rxPacketsReceivedOK: {gatewayPayload.rxPacketsReceivedOK}</Text>
-                            <Text>txPacketsReceived: {gatewayPayload.txPacketsReceived}</Text>
-                            <Text>txPacketsEmitted: {gatewayPayload.txPacketsEmitted}</Text>
-                        </Card>
-                    )
-                }}
-            </Consumer>
-        );
+            <Card title={"Gateway: " + gatewayObj.mac}>
+                <Text>Time: {gatewayObj.time}</Text>
+                <Text>rxPacketsReceived: {gatewayObj.rxPacketsReceived}</Text>
+                <Text>rxPacketsReceivedOK: {gatewayObj.rxPacketsReceivedOK}</Text>
+                <Text>txPacketsReceived: {gatewayObj.txPacketsReceived}</Text>
+                <Text>txPacketsEmitted: {gatewayObj.txPacketsEmitted}</Text>
+                <Text>latitude: {gatewayObj.latitude}</Text>
+                <Text>longitude: {gatewayObj.longitude}</Text>
+                <Text>altitude: {gatewayObj.altitude}</Text>
+            </Card>
+        )
     }
-
 }
+
+export default Gateway;

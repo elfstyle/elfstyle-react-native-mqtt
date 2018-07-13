@@ -1,9 +1,11 @@
-import ConsoleMessage from '../classes/ConsoleMessage';
+import ConsoleRecord from '../classes/ConsoleRecord';
+import { consoleAddRecord } from '../actions/consoleActions'
+import store from '../store'
 
 // writes message to console array
 consoleLog = (title, message = "") => {
-    //const consoleDepth = 50;
-    //this.setState({ console: [new ConsoleMessage(title, message), ...(this.state.console.slice(0, consoleDepth - 1))] });
+    const newRecord = new ConsoleRecord(title, message);
+    store.dispatch(consoleAddRecord(newRecord));
     console.log(`${title} - ${message}`);
 }
 

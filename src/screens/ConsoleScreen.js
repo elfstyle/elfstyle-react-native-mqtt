@@ -9,8 +9,7 @@ class ConsoleScreen extends React.Component {
 
   render() {
     return (
-      <Text>ConsoleScreen</Text>
-  //    <Console />
+      <Console />
     );
   }
 }

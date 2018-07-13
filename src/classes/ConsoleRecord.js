@@ -1,8 +1,8 @@
-export default class ConsoleMessage {
+export default class ConsoleRecord {
     static currentId = 0;
     constructor(title, message = '') {
-        ConsoleMessage.currentId++;
-        this.id = ConsoleMessage.currentId;
+        ConsoleRecord.currentId++;
+        this.id = ConsoleRecord.currentId;
         this.title = title;
         this.body = message;
         this.dateTime = new Date();

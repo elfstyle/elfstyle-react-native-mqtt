@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { ToastAndroid } from 'react-native'
 import {
     debugLog,
+    consoleLog,
     getCurrentConfig,
     connectMQTTClient,
     subscribeMQTT,
@@ -15,12 +16,15 @@ class ApplicationProvider extends Component {
     //react lifecycle method
     componentDidMount = () => {
         debugLog('componentDidMount');
+        this.performConnectionProcedure();
+        //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
+    }
 
+    performConnectionProcedure = () => {
+        consoleLog('performConnectionProcedure');
         getCurrentConfig()
             .then(config => connectMQTTClient(config))
             .then(client => subscribeMQTT(client, subscriptions));
-
-        //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
     }
 
     //get Node Elapsed time with NodeID

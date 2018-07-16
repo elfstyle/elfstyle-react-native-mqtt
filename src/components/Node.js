@@ -11,52 +11,52 @@ class Node extends Component {
         devEUI: PropTypes.string.isRequired,
     }
     render() {
-
-        const devEUI = this.props.devEUI;
-
-        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
-        const deviceName = devEUI;//actions.getDeviceName(devEUI);
-
-        // const parameters = actions.getParameters(devEUI).map((key) => {
-        //     return (
-        //         <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
-        //     );
-        // });
-
         return (
-            <View style={styles.nodeContainer}>
-                <View style={styles.nodeHeader}>
-                    <TouchableOpacity
-                        onPress={() => {
-                            this.props.navigation.navigate(
-                                'NodeDetails',
-                                {
-                                    devEUI: devEUI,
-                                    deviceName: deviceName,
-                                },
+            <Consumer>
+                {
+                    ({ actions }) => {
+                        const devEUI = this.props.devEUI;
+
+                        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+                        const deviceName = actions.getDeviceName(devEUI);
+
+                        const parameters = actions.getParameters(devEUI).map((key) => {
+                            return (
+                                <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
                             );
-                        }}
-                    >
-                        <Text style={styles.nodeTitle}>{deviceName}</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
-                </View>
-                <View style={styles.parametersContainer}>
-                    {/* {parameters} */}
-                </View>
-            </View>
-        )
+                        });
+
+                        return (
+                            <View style={styles.nodeContainer}>
+                                <View style={styles.nodeHeader}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            this.props.navigation.navigate(
+                                                'NodeDetails',
+                                                {
+                                                    devEUI: devEUI,
+                                                    deviceName: deviceName,
+                                                },
+                                            );
+                                        }}
+                                    >
+                                        <Text style={styles.nodeTitle}>{deviceName}</Text>
+                                    </TouchableOpacity>
+                                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
+                                </View>
+                                <View style={styles.parametersContainer}>
+                                    {parameters}
+                                </View>
+                            </View>
+                        )
+                    }
+                }
+            </Consumer>
+        );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        nodes: state.nodes,
-        nodeDetails: state.nodeDetails,
-    }
-};
-
-export default connect(mapStateToProps, null)(withNavigation(Node));
+export default withNavigation(Node);
 
 const styles = StyleSheet.create({
     nodeContainer: {

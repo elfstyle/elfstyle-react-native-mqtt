@@ -18,11 +18,11 @@ class NodeParameterDetailsScreen extends React.Component {
     render() {
         return (
             <Consumer>
-                {({ state, actions }) => {
+                {({ actions }) => {
                     const devEUI = this.props.navigation.getParam('devEUI', '');
                     const parameter = this.props.navigation.getParam('parameter', '');
 
-                    const nodeElapsedTime = actions.getNodeElapsedTime(devEUI);
+                    const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
                     const deviceName = actions.getDeviceName(devEUI);
                     const parameterName = actions.getParameterName(devEUI, parameter);
                     const parameterValue = actions.getParameterValue(devEUI, parameter);

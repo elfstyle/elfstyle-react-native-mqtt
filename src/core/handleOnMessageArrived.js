@@ -7,7 +7,7 @@ import {
 } from '.'
 
 function handleOnMessageArrived(message) {
-    debugLog('handleOnMessageArrived', message.payloadString);
+    //debugLog('handleOnMessageArrived', message.payloadString);
     let payload;
 
     try {

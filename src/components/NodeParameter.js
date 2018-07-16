@@ -13,7 +13,7 @@ class NodeParameter extends Component {
     render() {
         return (
             <Consumer>
-                {({ state, actions }) => {
+                {({ actions }) => {
                     const devEUI = this.props.devEUI;
                     const parameter = this.props.parameter;
 

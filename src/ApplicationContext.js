@@ -4,11 +4,11 @@ import { ToastAndroid } from 'react-native'
 import {
     debugLog,
     consoleLog,
-    getCurrentConfig,
     connectMQTTClient,
     subscribeMQTT,
 } from './core'
 import subscriptions from './configs/subscriptions'
+import { configLoad } from './actions/configActions'
 
 const ApplicationContext = React.createContext();
 
@@ -17,16 +17,19 @@ class ApplicationProvider extends Component {
     //react lifecycle method
     componentDidMount = () => {
         debugLog('componentDidMount');
-        this.performConnectionProcedure();
+        this.props.configLoad();
+
         //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
     }
 
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.config !== prevProps.config) {
+            this.performConnectionProcedure();
+        }
+    }
+
     performConnectionProcedure = () => {
-        getCurrentConfig()
-            .then(config => {
-                consoleLog("Connected", JSON.stringify(config));
-                return connectMQTTClient(config);
-            })
+        connectMQTTClient(this.props.config)
             .then(client => subscribeMQTT(client, subscriptions));
     }
 
@@ -41,15 +44,7 @@ class ApplicationProvider extends Component {
     //react lifecycle method
     render() {
         return (
-            <ApplicationContext.Provider value={{
-                actions: {
-                    // connectMQTTClient: this.connectMQTTClient,
-                    // getCurrentConfig: this.getCurrentConfig,
-                    // saveConfig: this.saveConfig,
-                    // sendMessage: this.sendMessage,
-                    // getNodeElapsedTime: this.getNodeElapsedTime,
-                }
-            }}>
+            <ApplicationContext.Provider value={{}}>
                 {this.props.children}
             </ApplicationContext.Provider >
         )
@@ -58,12 +53,17 @@ class ApplicationProvider extends Component {
 
 const mapStateToProps = state => {
     return {
-        nodes: state.nodes,
-        nodeDetails: state.nodeDetails,
+        config: state.config,
     }
 };
 
-const ApplicationProviderRedux = connect(mapStateToProps, null)(ApplicationProvider);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        configLoad: () => dispatch(configLoad()),
+    }
+}
+
+const ApplicationProviderRedux = connect(mapStateToProps, mapDispatchToProps)(ApplicationProvider);
 
 const Consumer = ApplicationContext.Consumer;
 

@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 
 import { Divider, Button } from 'react-native-elements'
 import SettingInput from '../components/SettingInput'
 import ViewWithKeyboard from '../components/ViewWithKeyboard'
-
+import { configSave } from '../actions/configActions'
 
 class SettingsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,22 +31,15 @@ class SettingsScreen extends React.Component {
 
     //handle press on Save Button
     handleSave = () => {
-        // if (this.saveConfig)
-        //     this.saveConfig(this.state.config);
+       this.props.configSave(this.state.config);
     }
 
     render() {
-
-        // //if this code is running first time, then init config state from context
-
-        // //attach saveConfig function to Settings screen
-        // this.saveConfig = actions.saveConfig;
 
         const configKeys = Object.keys(this.state.config);
 
         return (
             <ViewWithKeyboard>
-                <Text>{JSON.stringify(this.props.config)}</Text>
                 <FlatList
                     data={configKeys}
                     renderItem={({ item }) => (
@@ -77,7 +70,13 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps, null)(SettingsScreen);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        configSave: (config) => dispatch(configSave(config)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsScreen);
 
 const styles = StyleSheet.create({
     row: {

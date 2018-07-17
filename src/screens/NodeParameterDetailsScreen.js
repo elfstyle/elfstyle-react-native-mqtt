@@ -26,7 +26,7 @@ class NodeParameterDetailsScreen extends React.Component {
             getParameterControlEnabled,
         } = nodesLib({ nodes: this.props.nodes, nodeDetails: this.props.nodeDetails });
 
-        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+        const nodeElapsedTime = this.props.nodesElapsedTime[devEUI] || '';
 
         const deviceName = getDeviceName(devEUI);
         const parameterName = getParameterName(devEUI, parameter);
@@ -71,6 +71,7 @@ const mapStateToProps = state => {
     return {
         nodes: state.nodes,
         nodeDetails: state.nodeDetails,
+        nodesElapsedTime: state.nodesElapsedTime,
     }
 };
 

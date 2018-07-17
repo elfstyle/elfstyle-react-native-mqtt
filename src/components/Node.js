@@ -15,7 +15,7 @@ class Node extends Component {
         const devEUI = this.props.devEUI;
 
         const { getDeviceName, getParameters } = nodesLib({ nodes: this.props.nodes, nodeDetails: this.props.nodeDetails });
-        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+        const nodeElapsedTime = this.props.nodesElapsedTime[devEUI] || '';
         const deviceName = getDeviceName(devEUI);
 
         const parameters = getParameters(devEUI).map((key) => {
@@ -54,6 +54,7 @@ const mapStateToProps = state => {
     return {
         nodes: state.nodes,
         nodeDetails: state.nodeDetails,
+        nodesElapsedTime: state.nodesElapsedTime,
     }
 };
 

@@ -9,6 +9,7 @@ import {
 } from './core'
 import subscriptions from './configs/subscriptions'
 import { configLoad } from './actions/configActions'
+import { calcNodesElapsedTime } from './actions/nodesElapsedTimeActions'
 
 const ApplicationContext = React.createContext();
 
@@ -18,8 +19,7 @@ class ApplicationProvider extends Component {
     componentDidMount = () => {
         debugLog('componentDidMount');
         this.props.configLoad();
-
-        //this.state.timer = setInterval(() => this.calcElapsedTime(), 1000);
+        setInterval(() => this.props.calcNodesElapsedTime(), 1000);
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -31,14 +31,6 @@ class ApplicationProvider extends Component {
     performConnectionProcedure = () => {
         connectMQTTClient(this.props.config)
             .then(client => subscribeMQTT(client, subscriptions));
-    }
-
-    //get Node Elapsed time with NodeID
-    getNodeElapsedTime = (nodeID) => {
-        // if (nodeID in this.state.nodesElapsedTime) {
-        //     return this.state.nodesElapsedTime[nodeID];
-        // }
-        // return '';
     }
 
     //react lifecycle method
@@ -60,6 +52,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch) => {
     return {
         configLoad: () => dispatch(configLoad()),
+        calcNodesElapsedTime: () => dispatch(calcNodesElapsedTime()),
     }
 }
 

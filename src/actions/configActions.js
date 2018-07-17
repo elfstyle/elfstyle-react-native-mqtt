@@ -4,7 +4,7 @@ import { AsyncStorage } from 'react-native';
 
 export const configSet = (config) => {
     return {
-        type: "CONFIG_SET",
+        type: CONFIG_SET,
         payload: config
     }
 }

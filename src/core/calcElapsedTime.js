@@ -1,19 +1,18 @@
+import { elapsedTimeToString } from '.'
 //calculation elpsed time from the last message for each Node 
-calcElapsedTime = () => {
-    const nodeKeys = Object.keys(this.state.nodes);
+calcElapsedTime = (nodes) => {
+    const nodeKeys = Object.keys(nodes);
+    const nodesElapsedTime = {};
     nodeKeys.forEach(nodeID => {
         try {
-            const nodeMessageTime = new Date(this.state.nodes[nodeID].rxInfo[0].time);
+            const nodeMessageTime = new Date(nodes[nodeID].rxInfo[0].time);
             const timeDiff = Date.now() - nodeMessageTime.getTime();
             const timeDiffString = timeDiff > 0 ? elapsedTimeToString(timeDiff) : '';
-            const newNodesElapsedTime = Object.assign({}, this.state.nodesElapsedTime);
-            newNodesElapsedTime[nodeID] = timeDiffString;
-            this.setState({ nodesElapsedTime: newNodesElapsedTime });
+            nodesElapsedTime[nodeID] = timeDiffString;
         }
-        catch (e) {
-
-        }
+        catch (e) { }
     });
+    return nodesElapsedTime;
 }
 
 export default calcElapsedTime;

@@ -10,6 +10,7 @@ import {
 import subscriptions from './configs/subscriptions'
 import { configLoad } from './actions/configActions'
 import { calcNodesElapsedTime } from './actions/nodesElapsedTimeActions'
+import { clientConnect } from './actions/clientActions'
 
 const ApplicationContext = React.createContext();
 
@@ -24,13 +25,11 @@ class ApplicationProvider extends Component {
 
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.config !== prevProps.config) {
-            this.performConnectionProcedure();
+            this.props.clientConnect();
         }
-    }
-
-    performConnectionProcedure = () => {
-        connectMQTTClient(this.props.config)
-            .then(client => subscribeMQTT(client, subscriptions));
+        if ((this.props.client !== prevProps.client) && this.props.client) {
+            subscribeMQTT(this.props.client, subscriptions)
+        }
     }
 
     //react lifecycle method
@@ -53,6 +52,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         configLoad: () => dispatch(configLoad()),
         calcNodesElapsedTime: () => dispatch(calcNodesElapsedTime()),
+        clientConnect: () => dispatch(clientConnect()),
     }
 }
 

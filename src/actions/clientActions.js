@@ -1,11 +1,26 @@
-import { } from '../types'
+import { CLIENT_SET, CLIENT_CLEAR } from '../types'
+import {
+    connectMQTTClient,
+} from '../core'
 
-export const action = () => dispath => {
+export const clientSet = (client) => {
+    return {
+        type: CLIENT_SET,
+        payload: client
+    }
+}
 
-    dispatch(
-        {
-            type: "",
-            payload: {}
-        }
-    );
+export const clientClear = () => {
+    return {
+        type: CLIENT_CLEAR
+    }
+}
+
+export const clientConnect = () => (dispatch, getState) => {
+    const { config, client } = getState();
+    if (client) client.disconnect();
+
+    connectMQTTClient(config)
+        .then(client => dispatch(clientSet(client)))
+        .catch(() => dispatch(clientClear()));
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, TextInput, Switch, StyleSheet } from 'react-native'
+import { TextInput, Switch, StyleSheet } from 'react-native'
 
 export default class SettingInput extends React.Component {
     render() {

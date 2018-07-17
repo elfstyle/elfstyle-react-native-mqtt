@@ -1,10 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, FlatList, View } from 'react-native'
-import { withNavigation } from 'react-navigation';
-import { Consumer } from '../ApplicationContext'
+import { connect } from 'react-redux'
+import { StyleSheet, Text, View } from 'react-native'
+import { withNavigation } from 'react-navigation'
 import NodeParameterControl from '../components/NodeParameterControl'
-import Node from '../components/Node'
-import { Button } from 'react-native-elements';
+import nodesLib from '../core/nodesLib'
 
 class NodeParameterDetailsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -16,56 +15,66 @@ class NodeParameterDetailsScreen extends React.Component {
     };
 
     render() {
+        const devEUI = this.props.navigation.getParam('devEUI', '');
+        const parameter = this.props.navigation.getParam('parameter', '');
+
+        const {
+            getDeviceName,
+            getParameterName,
+            getParameterValue,
+            getParameterUnits,
+            getParameterControlEnabled,
+        } = nodesLib({ nodes: this.props.nodes, nodeDetails: this.props.nodeDetails });
+
+        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+
+        const deviceName = getDeviceName(devEUI);
+        const parameterName = getParameterName(devEUI, parameter);
+        const parameterValue = getParameterValue(devEUI, parameter);
+        const parameterUnits = getParameterUnits(devEUI, parameter);
+
+        const controlComponent = getParameterControlEnabled(devEUI, parameter) ?
+            <NodeParameterControl devEUI={devEUI} parameter={parameter} />
+            :
+            null;
+
         return (
-            <Consumer>
-                {({ actions }) => {
-                    const devEUI = this.props.navigation.getParam('devEUI', '');
-                    const parameter = this.props.navigation.getParam('parameter', '');
-
-                    const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
-                    const deviceName = actions.getDeviceName(devEUI);
-                    const parameterName = actions.getParameterName(devEUI, parameter);
-                    const parameterValue = actions.getParameterValue(devEUI, parameter);
-                    const parameterUnits = actions.getParameterUnits(devEUI, parameter);
-
-                    const controlComponent = actions.getParameterControlEnabled(devEUI, parameter) ?
-                        <NodeParameterControl devEUI={devEUI} parameter={parameter} />
-                        :
-                        null;
-
-                    return (
-                        <React.Fragment>
-                            <View style={styles.Container}>
-                                <View>
-                                    <Text style={styles.elapsedTime}>{nodeElapsedTime}</Text>
-                                </View>
-                                <View>
-                                    <Text style={styles.value}>
-                                        {parameterValue}
-                                        <Text style={styles.parameterUnit}>
-                                            {parameterUnits}
-                                        </Text>
-                                    </Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <Text style={styles.title}>Device name:</Text>
-                                    <Text style={styles.description}>{deviceName}</Text>
-                                </View>
-                                <View style={styles.row}>
-                                    <Text style={styles.title}>Parameter:</Text>
-                                    <Text style={styles.description}>{parameterName}</Text>
-                                </View>
-                            </View>
-                            {controlComponent}
-                        </React.Fragment>
-                    )
-                }}
-            </Consumer>
-        );
+            <React.Fragment>
+                <View style={styles.Container}>
+                    <View>
+                        <Text style={styles.elapsedTime}>{nodeElapsedTime}</Text>
+                    </View>
+                    <View>
+                        <Text style={styles.value}>
+                            {parameterValue}
+                            <Text style={styles.parameterUnit}>
+                                {parameterUnits}
+                            </Text>
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.title}>Device name:</Text>
+                        <Text style={styles.description}>{deviceName}</Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.title}>Parameter:</Text>
+                        <Text style={styles.description}>{parameterName}</Text>
+                    </View>
+                </View>
+                {controlComponent}
+            </React.Fragment>
+        )
     }
 }
 
-export default withNavigation(NodeParameterDetailsScreen);
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+        nodeDetails: state.nodeDetails,
+    }
+};
+
+export default connect(mapStateToProps, null)(withNavigation(NodeParameterDetailsScreen));
 
 const styles = StyleSheet.create({
     Container: {

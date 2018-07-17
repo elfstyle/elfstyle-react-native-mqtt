@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, Text } from 'react-native';
+import { FlatList } from 'react-native';
 import { connect } from 'react-redux'
 
 import { SearchBar } from 'react-native-elements'

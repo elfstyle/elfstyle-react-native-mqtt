@@ -1,9 +1,10 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, FlatList, View, ScrollView } from 'react-native'
+import { ScrollView } from 'react-native'
 import { withNavigation } from 'react-navigation';
-import { Consumer } from '../ApplicationContext'
 import JSONTree from 'react-native-json-tree'
+import nodesLib from '../core/nodesLib'
 
 class NodeDetailsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,23 +15,25 @@ class NodeDetailsScreen extends React.Component {
     };
 
     render() {
-        return (
-            <Consumer>
-                {({ state, actions }) => {
-                    const devEUI = this.props.navigation.getParam('devEUI', '');
+        const devEUI = this.props.navigation.getParam('devEUI', '');
+        
+        const { getNodeObject } = nodesLib({ nodes: this.props.nodes });
 
-                    return (
-                        <ScrollView>
-                            <JSONTree data={actions.getNodeObject(devEUI)} theme={theme} isLightTheme={false} />
-                        </ScrollView>
-                    )
-                }}
-            </Consumer>
-        );
+        return (
+            <ScrollView>
+                <JSONTree data={getNodeObject(devEUI)} theme={theme} isLightTheme={false} />
+            </ScrollView>
+        )
     }
 }
 
-export default withNavigation(NodeDetailsScreen);
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+    }
+};
+
+export default connect(mapStateToProps, null)(withNavigation(NodeDetailsScreen));
 
 const theme = {
     scheme: 'monokai',

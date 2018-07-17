@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text, FlatList } from 'react-native'
-import { Consumer } from '../ApplicationContext'
+import { FlatList } from 'react-native'
 import Node from '../components/Node'
+import nodesLib from '../core/nodesLib'
 
 class NodesScreen extends React.Component {
     static navigationOptions = {
@@ -10,11 +10,11 @@ class NodesScreen extends React.Component {
     }
 
     render() {
-        const nodes = this.props.nodes;
-        const nodesKeyArray = Object.keys(nodes);
+        const { getNodesDevEUIArray } = nodesLib({ nodes: this.props.nodes });
+
         return (
             <FlatList
-                data={nodesKeyArray}
+                data={getNodesDevEUIArray()}
                 renderItem={({ item }) => (
                     <Node devEUI={item} />
                 )}

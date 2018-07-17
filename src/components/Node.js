@@ -3,60 +3,61 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { withNavigation } from 'react-navigation'
-import { Consumer } from '../ApplicationContext'
 import NodeParameter from './NodeParameter'
+import nodesLib from '../core/nodesLib'
 
 class Node extends Component {
     static propTypes = {
         devEUI: PropTypes.string.isRequired,
     }
-    render() {
+
+    render() {       
+        const devEUI = this.props.devEUI;
+
+        const { getDeviceName, getParameters } = nodesLib({ nodes: this.props.nodes, nodeDetails: this.props.nodeDetails });
+        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
+        const deviceName = getDeviceName(devEUI);
+
+        const parameters = getParameters(devEUI).map((key) => {
+            return (
+                <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
+            );
+        });
+
         return (
-            <Consumer>
-                {
-                    ({ actions }) => {
-                        const devEUI = this.props.devEUI;
-
-                        const nodeElapsedTime = '';//actions.getNodeElapsedTime(devEUI);
-                        const deviceName = actions.getDeviceName(devEUI);
-
-                        const parameters = actions.getParameters(devEUI).map((key) => {
-                            return (
-                                <NodeParameter devEUI={devEUI} parameter={key} key={devEUI + key} />
+            <View style={styles.nodeContainer}>
+                <View style={styles.nodeHeader}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            this.props.navigation.navigate(
+                                'NodeDetails',
+                                {
+                                    devEUI: devEUI,
+                                    deviceName: deviceName,
+                                },
                             );
-                        });
-
-                        return (
-                            <View style={styles.nodeContainer}>
-                                <View style={styles.nodeHeader}>
-                                    <TouchableOpacity
-                                        onPress={() => {
-                                            this.props.navigation.navigate(
-                                                'NodeDetails',
-                                                {
-                                                    devEUI: devEUI,
-                                                    deviceName: deviceName,
-                                                },
-                                            );
-                                        }}
-                                    >
-                                        <Text style={styles.nodeTitle}>{deviceName}</Text>
-                                    </TouchableOpacity>
-                                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
-                                </View>
-                                <View style={styles.parametersContainer}>
-                                    {parameters}
-                                </View>
-                            </View>
-                        )
-                    }
-                }
-            </Consumer>
-        );
+                        }}
+                    >
+                        <Text style={styles.nodeTitle}>{deviceName}</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.nodeElapsedTime}>{nodeElapsedTime}</Text>
+                </View>
+                <View style={styles.parametersContainer}>
+                    {parameters}
+                </View>
+            </View>
+        )
     }
 }
 
-export default withNavigation(Node);
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+        nodeDetails: state.nodeDetails,
+    }
+};
+
+export default connect(mapStateToProps, null)(withNavigation(Node));
 
 const styles = StyleSheet.create({
     nodeContainer: {

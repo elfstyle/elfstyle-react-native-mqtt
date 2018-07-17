@@ -1,7 +1,7 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 'react-native'
 import { Divider, Button } from 'react-native-elements'
-import { Consumer } from '../ApplicationContext'
 import SettingInput from '../components/SettingInput'
 import ViewWithKeyboard from '../components/ViewWithKeyboard'
 
@@ -19,68 +19,65 @@ class SettingsScreen extends React.Component {
         super(props)
 
         this.state = {
-            config: null,
+            config: {},
         }
     }
 
     componentDidMount() {
         //pass handleSave func to static method navigationOptions
         this.props.navigation.setParams({ handleSave: this.handleSave });
+        this.state.config = { ...this.props.config };
     }
 
     //handle press on Save Button
     handleSave = () => {
-        if (this.saveConfig)
-            this.saveConfig(this.state.config);
+        // if (this.saveConfig)
+        //     this.saveConfig(this.state.config);
     }
 
     render() {
+
+        // //if this code is running first time, then init config state from context
+
+        // //attach saveConfig function to Settings screen
+        // this.saveConfig = actions.saveConfig;
+
+        const configKeys = Object.keys(this.state.config);
+
         return (
-            <Consumer>
-                {
-                    ({ state, actions }) => {
-                        // //if this code is running first time, then init config state from context
-                        // if (!this.state.config) {
-                        //     this.state.config = state.currentConfig;
-                        // }
-
-                        // //attach saveConfig function to Settings screen
-                        // this.saveConfig = actions.saveConfig;
-
-                        // const configKeys = Object.keys(this.state.config);
-
-                        return (
-                            <ViewWithKeyboard>
-                                <Text>SettingsScreen</Text>
-                                {/* <FlatList
-                                    data={configKeys}
-                                    renderItem={({ item }) => (
-                                        <View style={styles.row}>
-                                            <Text style={styles.label}>{item}</Text>
-                                            <SettingInput
-                                                value={this.state.config[item]}
-                                                onChangeText={
-                                                    (newValue) => {
-                                                        let newConfig = Object.assign({}, this.state.config);
-                                                        newConfig[item] = newValue;
-                                                        this.setState({ config: newConfig });
-                                                    }
-                                                } />
-                                        </View>
-                                    )}
-                                    keyExtractor={item => item}
-                                    ItemSeparatorComponent={() => <Divider style={{ backgroundColor: 'lightgray', width: StyleSheet.hairlineWidth }} />}
-                                /> */}
-                            </ViewWithKeyboard>
-                        )
-                    }
-                }
-            </Consumer>
-        );
+            <ViewWithKeyboard>
+                <Text>{JSON.stringify(this.props.config)}</Text>
+                <FlatList
+                    data={configKeys}
+                    renderItem={({ item }) => (
+                        <View style={styles.row}>
+                            <Text style={styles.label}>{item}</Text>
+                            <SettingInput
+                                value={this.state.config[item]}
+                                onChangeText={
+                                    (newValue) => {
+                                        let newConfig = Object.assign({}, this.state.config);
+                                        newConfig[item] = newValue;
+                                        this.setState({ config: newConfig });
+                                    }
+                                } />
+                        </View>
+                    )}
+                    keyExtractor={item => item}
+                    ItemSeparatorComponent={() => <Divider style={{ backgroundColor: 'lightgray', width: StyleSheet.hairlineWidth }} />}
+                />
+            </ViewWithKeyboard>
+        )
     }
 }
 
-export default SettingsScreen;
+const mapStateToProps = state => {
+    return {
+        config: state.config,
+    }
+};
+
+export default connect(mapStateToProps, null)(SettingsScreen);
 
 const styles = StyleSheet.create({
     row: {

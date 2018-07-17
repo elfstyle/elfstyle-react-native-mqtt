@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
-import { Consumer } from '../ApplicationContext'
 import { Button } from 'react-native-elements'
+import nodesLib from '../core/nodesLib'
 
 class NodeParameterControl extends Component {
     static propTypes = {
@@ -11,40 +12,47 @@ class NodeParameterControl extends Component {
     }
 
     render() {
+        const devEUI = this.props.devEUI;
+        const parameter = this.props.parameter;
+
+        const {
+            getParameterValueRaw,
+            getParameterControlStates,
+        } = nodesLib({ nodes: this.props.nodes, nodeDetails: this.props.nodeDetails });
+
+        const parameterValueRaw = getParameterValueRaw(devEUI, parameter);
+        const parameterControlStates = getParameterControlStates(devEUI, parameter);
+
+        const buttonTitle = parameterValueRaw ? parameterControlStates[0] : parameterControlStates[1];
+        const buttonAction = () => {
+            let messagePayload = {};
+            messagePayload[parameter] = !parameterValueRaw;
+            //actions.sendMessage(devEUI, messagePayload);
+        };
+
         return (
-            <Consumer>
-                {({ actions }) => {
-                    const devEUI = this.props.devEUI;
-                    const parameter = this.props.parameter;
 
-                    const parameterValueRaw = actions.getParameterValueRaw(devEUI, parameter);
-                    const parameterControlStates = actions.getParameterControlStates(devEUI, parameter);
-                    const buttonTitle = parameterValueRaw ? parameterControlStates[0] : parameterControlStates[1];
-                    const buttonAction = () => {
-                        let messagePayload = {};
-                        messagePayload[parameter] = !parameterValueRaw;
-                        actions.sendMessage(devEUI, messagePayload);
-                    };
+            <View style={styles.container}>
+                <Button
+                    title={buttonTitle}
+                    buttonStyle={styles.button}
+                    textStyle={styles.buttonText}
+                    onPress={buttonAction}
+                />
+            </View>
 
-                    return (
-
-                        <View style={styles.container}>
-                            <Button
-                                title={buttonTitle}
-                                buttonStyle={styles.button}
-                                textStyle={styles.buttonText}
-                                onPress={buttonAction}
-                            />
-                        </View>
-
-                    );
-                }}
-            </Consumer>
         );
     }
 }
 
-export default NodeParameterControl;
+const mapStateToProps = state => {
+    return {
+        nodes: state.nodes,
+        nodeDetails: state.nodeDetails,
+    }
+};
+
+export default connect(mapStateToProps, null)(NodeParameterControl);
 
 const styles = StyleSheet.create({
 

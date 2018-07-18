@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Badge } from 'react-native-elements'
 
-import { Consumer } from '../ApplicationContext'
-
 class MQTTClient extends Component {
     constructor(props) {
         super(props);
@@ -11,19 +9,13 @@ class MQTTClient extends Component {
 
     render() {
         return (
-            <Consumer>
-                {({ state }) => {
-                    return (
-                        <Card title="MQTTClient">
-                            <Badge
-                                value={state.connected ? "online" : "offline"}
-                                containerStyle={{ backgroundColor: state.connected ? 'seagreen' : 'firebrick' }}
-                            />
-                        </Card>
-                    )
-                }}
-            </Consumer>
-        );
+            <Card title="MQTTClient">
+                <Badge
+                    value={state.connected ? "online" : "offline"}
+                    containerStyle={{ backgroundColor: state.connected ? 'seagreen' : 'firebrick' }}
+                />
+            </Card>
+        )
     }
 }
 

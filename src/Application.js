@@ -9,9 +9,7 @@ import { configLoad } from './actions/configActions'
 import { calcNodesElapsedTime } from './actions/nodesElapsedTimeActions'
 import { clientConnect } from './actions/clientActions'
 
-const ApplicationContext = React.createContext();
-
-class ApplicationProvider extends Component {
+class Application extends Component {
 
     componentDidMount = () => {
         debugLog('componentDidMount');
@@ -27,9 +25,9 @@ class ApplicationProvider extends Component {
 
     render() {
         return (
-            <ApplicationContext.Provider value={{}}>
+            <React.Fragment>
                 {this.props.children}
-            </ApplicationContext.Provider >
+            </React.Fragment>
         )
     }
 }
@@ -48,8 +46,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-const ApplicationProviderRedux = connect(mapStateToProps, mapDispatchToProps)(ApplicationProvider);
-
-const Consumer = ApplicationContext.Consumer;
-
-export { ApplicationProviderRedux, Consumer }
+export default connect(mapStateToProps, mapDispatchToProps)(Application);

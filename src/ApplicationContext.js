@@ -4,10 +4,7 @@ import { ToastAndroid } from 'react-native'
 import {
     debugLog,
     consoleLog,
-    connectMQTTClient,
-    subscribeMQTT,
 } from './core'
-import subscriptions from './configs/subscriptions'
 import { configLoad } from './actions/configActions'
 import { calcNodesElapsedTime } from './actions/nodesElapsedTimeActions'
 import { clientConnect } from './actions/clientActions'
@@ -16,7 +13,6 @@ const ApplicationContext = React.createContext();
 
 class ApplicationProvider extends Component {
 
-    //react lifecycle method
     componentDidMount = () => {
         debugLog('componentDidMount');
         this.props.configLoad();
@@ -27,12 +23,8 @@ class ApplicationProvider extends Component {
         if (this.props.config !== prevProps.config) {
             this.props.clientConnect();
         }
-        if ((this.props.client !== prevProps.client) && this.props.client) {
-            subscribeMQTT(this.props.client, subscriptions)
-        }
     }
 
-    //react lifecycle method
     render() {
         return (
             <ApplicationContext.Provider value={{}}>

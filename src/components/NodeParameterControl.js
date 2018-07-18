@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements'
 import nodesLib from '../core/nodesLib'
+import { clientSendMessage } from '../actions/clientActions'
 
 class NodeParameterControl extends Component {
     static propTypes = {
@@ -27,7 +28,7 @@ class NodeParameterControl extends Component {
         const buttonAction = () => {
             let messagePayload = {};
             messagePayload[parameter] = !parameterValueRaw;
-            //actions.sendMessage(devEUI, messagePayload);
+            this.props.clientSendMessage(devEUI, messagePayload);
         };
 
         return (
@@ -52,7 +53,13 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps, null)(NodeParameterControl);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        clientSendMessage: (devEUI, messagePayload) => dispatch(clientSendMessage(devEUI, messagePayload)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NodeParameterControl);
 
 const styles = StyleSheet.create({
 

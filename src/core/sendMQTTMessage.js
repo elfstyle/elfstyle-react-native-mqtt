@@ -39,8 +39,6 @@ function sendMQTTMessage(client, applicationID, devEUI, payload) {
         };
 
         try {
-            //const applicationID = this.state.nodes[devEUI].applicationID;
-
             const topic = `application/${applicationID}/node/${devEUI}/tx`;
 
             if (client) {

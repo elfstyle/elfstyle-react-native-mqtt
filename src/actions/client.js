@@ -5,7 +5,8 @@ import {
     sendMQTTMessage,
 } from '../core'
 import subscriptions from '../configs/subscriptions'
-import { setConnected, setToast } from './common'
+import { setConnected } from './common'
+import setToast from '../core/setToast'
 
 export const clientSet = client => dispatch => {
     dispatch(setConnected());
@@ -36,6 +37,6 @@ export const clientSendMessage = (devEUI, messagePayload) => (dispatch, getState
     const { client, nodes } = getState();
     const applicationID = nodes[devEUI].applicationID;
     sendMQTTMessage(client, applicationID, devEUI, messagePayload)
-        .then(message => dispatch(setToast(message)))
-        .catch(message => dispatch(setToast(message)));
+        .then(message => setToast(message))
+        .catch(message => setToast(message));
 }

@@ -1,16 +1,20 @@
 import React from 'react'
-import { StyleSheet, Text, View, ScrollView } from 'react-native'
-import { Header } from 'react-native-elements'
+import { Provider } from 'react-redux'
+import Application from './src/Application'
 
-import { Provider } from './ApplicationContext'
-import Root from './routes/root'
+import store from './src/store'
+import Root from './src/routes'
 
-export default class App extends React.Component {
+class App extends React.Component {
   render() {
     return (
-      <Provider>
-        <Root />
+      <Provider store={store}>
+        <Application>
+          <Root />
+        </Application>
       </Provider>
     );
   }
 }
+
+export default App;

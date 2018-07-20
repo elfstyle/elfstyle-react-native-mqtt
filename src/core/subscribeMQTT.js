@@ -1,7 +1,6 @@
 import { debugLog } from '.'
 
 function subscribeMQTT(client, subscriptionsArray) {
-    debugLog('subscribeMQTT');
     subscriptionsArray.forEach(subscriptionString => {
         try {
             client.subscribe(subscriptionString, { qos: 1 });

@@ -5,13 +5,14 @@ import {
     sendMQTTMessage,
 } from '../core'
 import subscriptions from '../configs/subscriptions'
+import { setConnected, setToast } from './common'
 
-export const clientSet = (client) => {
-    console.log('client set')
-    return {
+export const clientSet = client => dispatch => {
+    dispatch(setConnected());
+    dispatch({
         type: CLIENT_SET,
         payload: client
-    }
+    });
 }
 
 export const clientClear = () => {
@@ -22,7 +23,6 @@ export const clientClear = () => {
 
 export const clientConnect = () => (dispatch, getState) => {
     const { config, client } = getState();
-    if (client) client.disconnect();
 
     connectMQTTClient(config)
         .then(client => {
@@ -35,5 +35,7 @@ export const clientConnect = () => (dispatch, getState) => {
 export const clientSendMessage = (devEUI, messagePayload) => (dispatch, getState) => {
     const { client, nodes } = getState();
     const applicationID = nodes[devEUI].applicationID;
-    sendMQTTMessage(client, applicationID, devEUI, messagePayload);
+    sendMQTTMessage(client, applicationID, devEUI, messagePayload)
+        .then(message => dispatch(setToast(message)))
+        .catch(message => dispatch(setToast(message)));
 }

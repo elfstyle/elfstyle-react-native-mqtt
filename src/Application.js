@@ -8,6 +8,7 @@ import {
 import { configLoad } from './actions/config'
 import { calcNodesElapsedTime } from './actions/nodesElapsedTime'
 import { clientConnect } from './actions/client'
+import { clearToast } from './actions/common'
 
 class Application extends Component {
 
@@ -20,6 +21,14 @@ class Application extends Component {
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.config !== prevProps.config) {
             this.props.clientConnect();
+        }
+        if (this.props.toastMessage !== prevProps.toastMessage) {
+            this.props.toastMessage && ToastAndroid.showWithGravity(
+                this.props.toastMessage,
+                ToastAndroid.SHORT,
+                ToastAndroid.BOTTOM
+            );
+            this.props.clearToast();
         }
     }
 
@@ -35,6 +44,7 @@ class Application extends Component {
 const mapStateToProps = state => {
     return {
         config: state.config,
+        toastMessage: state.common.toast,
     }
 };
 
@@ -43,6 +53,7 @@ const mapDispatchToProps = (dispatch) => {
         configLoad: () => dispatch(configLoad()),
         calcNodesElapsedTime: () => dispatch(calcNodesElapsedTime()),
         clientConnect: () => dispatch(clientConnect()),
+        clearToast: () => dispatch(clearToast()),
     }
 }
 

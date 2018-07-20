@@ -2,6 +2,7 @@ import {
     COMMON_CONNECTED_SET,
     COMMON_CONNECTED_CLEAR,
     COMMON_TOAST_SET,
+    COMMON_TOAST_CLEAR,
 } from '../types'
 
 const initialState = {
@@ -25,6 +26,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 toast: action.payload
+            };
+        case COMMON_TOAST_CLEAR:
+            return {
+                ...state,
+                toast: null
             };
 
         default:

@@ -1,6 +1,6 @@
-import { storeGatewaysAdd } from '../actions/gatewaysActions'
-import { storeNodesAdd } from '../actions/nodesActions'
-import { storeNodeDetailsAdd } from '../actions/nodeDetailsActions'
+import { storeGatewaysAdd } from '../actions/gateways'
+import { storeNodesAdd } from '../actions/nodes'
+import { storeNodeDetailsAdd } from '../actions/nodeDetails'
 import {
     debugLog,
     consoleLog

@@ -5,9 +5,9 @@ import {
     debugLog,
     consoleLog,
 } from './core'
-import { configLoad } from './actions/configActions'
-import { calcNodesElapsedTime } from './actions/nodesElapsedTimeActions'
-import { clientConnect } from './actions/clientActions'
+import { configLoad } from './actions/config'
+import { calcNodesElapsedTime } from './actions/nodesElapsedTime'
+import { clientConnect } from './actions/client'
 
 class Application extends Component {
 

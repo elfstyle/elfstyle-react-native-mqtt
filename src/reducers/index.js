@@ -1,21 +1,21 @@
 import { combineReducers } from 'redux'
 
-import clientReducer from './clientReducer'
-import commonReducer from './commonReducer'
-import configReducer from './configReducer'
-import consoleReducer from './consoleReducer'
-import gatewaysReducer from './gatewaysReducer'
-import nodeDetailsReducer from './nodeDetailsReducer'
+import client from './client'
+import common from './common'
+import config from './config'
+import console from './console'
+import gateways from './gateways'
+import nodeDetails from './nodeDetails'
 import nodesElapsedTime from './nodesElapsedTime'
-import nodesReducer from './nodesReducer'
+import nodes from './nodes'
 
 export default combineReducers({
-    client: clientReducer,
-    common: commonReducer,
-    config: configReducer,
-    console: consoleReducer,
-    gateways: gatewaysReducer,
-    nodeDetails: nodeDetailsReducer,
-    nodesElapsedTime: nodesElapsedTime,
-    nodes: nodesReducer,
+    client,
+    common,
+    config,
+    console,
+    gateways,
+    nodeDetails,
+    nodesElapsedTime,
+    nodes,
 });

@@ -10,6 +10,7 @@
    },
    "android": {
      "package": "com.elfstyle.mqttclient",
+     "versionCode": 2,
      "permissions": ["INTERNET"]
    }
   }

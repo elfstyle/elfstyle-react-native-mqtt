@@ -6,7 +6,7 @@ import MQTTClient from '../components/MQTTClient'
 
 class CommunicationScreen extends React.Component {
     static navigationOptions = {
-        title: 'Communication'
+        title: 'Gateways'
     }
 
     render() {

@@ -19,14 +19,13 @@ class SettingsScreen extends React.Component {
         super(props)
 
         this.state = {
-            config: {},
+            config: { ...this.props.config },
         }
     }
 
     componentDidMount() {
         //pass handleSave func to static method navigationOptions
         this.props.navigation.setParams({ handleSave: this.handleSave });
-        this.state.config = { ...this.props.config };
     }
 
     //handle press on Save Button

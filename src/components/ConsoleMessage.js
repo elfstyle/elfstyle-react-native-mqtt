@@ -11,18 +11,18 @@ class ConsoleMessage extends Component {
         super(props)
 
         this.state = {
-            fadeAnim: new Animated.Value(1),  
+            fadeAnim: new Animated.Value(1),
         }
     }
 
     componentDidMount() {
-        Animated.timing(                  
-            this.state.fadeAnim,           
+        Animated.timing(
+            this.state.fadeAnim,
             {
-                toValue: 0.5,                   
-                duration: 15000,              
+                toValue: 0.5,
+                duration: 15000,
             }
-        ).start();                        
+        ).start();
     }
 
     render() {
@@ -34,7 +34,15 @@ class ConsoleMessage extends Component {
         return (
             <Animated.View
                 style={{
-                    opacity: fadeAnim,         
+                    opacity: fadeAnim,
+                    transform: [
+                        {
+                            scale: this.state.fadeAnim.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0.8, 1]
+                            }),
+                        },
+                    ],
                 }}>
 
                 <Text style={styles.date}>{dateTimeString}</Text>

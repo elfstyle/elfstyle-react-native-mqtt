@@ -1,10 +1,12 @@
-import { debugLog } from '.'
+import {
+    debugLog,
+    consoleLog,
+} from '.'
 
 //fires when Connection lost
 handleOnConnectionLost = responseObject => {
-    debugLog('handleOnConnectionLost');
-    // this.setState({ connected: false });
-    // this.consoleLog("Disconnected", responseObject.errorMessage);
+    debugLog('handleOnConnectionLost', responseObject.errorMessage);
+    consoleLog('Connection Lost', responseObject.errorMessage);
 };
 
 export default handleOnConnectionLost;

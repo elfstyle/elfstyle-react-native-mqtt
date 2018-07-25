@@ -1,5 +1,5 @@
 import { NODESELAPSEDTIME_SET } from '../types'
-import { calcElapsedTime } from '../core'
+import { calcElapsedTime } from '../../core'
 
 export const nodesElapsedTimeSet = (object) => {
     return {

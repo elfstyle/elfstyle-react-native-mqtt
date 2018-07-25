@@ -1,5 +1,5 @@
 import ConsoleRecord from '../classes/ConsoleRecord';
-import { consoleAddRecord } from '../actions/console'
+import { consoleAddRecord } from '../store/actions/console'
 import store from '../store'
 
 // writes message to console array

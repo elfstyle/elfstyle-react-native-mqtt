@@ -1,5 +1,5 @@
 import { CONFIG_SET } from '../types'
-import DefaultConfig from '../classes/Config'
+import DefaultConfig from '../../classes/Config'
 import { AsyncStorage } from 'react-native';
 
 export const configSet = (config) => {

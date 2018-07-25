@@ -1,4 +1,4 @@
-import store from '../store'
+import store from '../../store'
 import { GATEWAYS_ADD } from '../types'
 
 export function gatewaysAdd(payload) {

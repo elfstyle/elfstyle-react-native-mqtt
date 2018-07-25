@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, FlatList, TextInput, Switch, ScrollView } from 
 import { Divider, Button } from 'react-native-elements'
 import SettingInput from '../components/SettingInput'
 import ViewWithKeyboard from '../components/ViewWithKeyboard'
-import { configSave } from '../actions/config'
+import { configSave } from '../store/actions/config'
 
 class SettingsScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {

@@ -3,10 +3,10 @@ import {
     subscribeMQTT,
     connectMQTTClient,
     sendMQTTMessage,
-} from '../core'
-import subscriptions from '../configs/subscriptions'
+} from '../../core'
+import subscriptions from '../../configs/subscriptions'
 import { setConnected } from './common'
-import setToast from '../core/setToast'
+import setToast from '../../core/setToast'
 
 export const clientSet = client => dispatch => {
     dispatch(setConnected());

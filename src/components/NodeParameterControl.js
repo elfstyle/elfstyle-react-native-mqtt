@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-elements'
 import nodesLib from '../core/nodesLib'
-import { clientSendMessage } from '../actions/client'
+import { clientSendMessage } from '../store/actions/client'
 
 class NodeParameterControl extends Component {
     static propTypes = {

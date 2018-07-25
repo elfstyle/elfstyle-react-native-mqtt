@@ -1,4 +1,4 @@
-import store from '../store'
+import store from '../../store'
 import { NODES_ADD } from '../types'
 
 export function nodesAdd(payload) {

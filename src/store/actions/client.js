@@ -14,6 +14,7 @@ export const clientSet = client => dispatch => {
         type: CLIENT_SET,
         payload: client
     });
+    debugLog('clientSet');
 }
 
 export const clientClear = () => {
@@ -24,6 +25,10 @@ export const clientClear = () => {
 
 export const clientConnect = () => (dispatch, getState) => {
     const { config, client } = getState();
+
+    try {
+            client.disconnect();
+    } catch (e) {}
 
     connectMQTTClient(config)
         .then(client => {

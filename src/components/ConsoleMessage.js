@@ -10,14 +10,12 @@ class ConsoleMessage extends Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            fadeAnim: new Animated.Value(1),
-        }
+        this.fadeAnim = new Animated.Value(1);
     }
 
     componentDidMount() {
         Animated.timing(
-            this.state.fadeAnim,
+            this.fadeAnim,
             {
                 toValue: 0.5,
                 duration: 15000,
@@ -29,20 +27,10 @@ class ConsoleMessage extends Component {
         const { dateTime, title, body } = this.props.message;
         const dateTimeString = dateTime.toISOString().replace(/[A-Z]/g, " ");
 
-        let { fadeAnim } = this.state;
-
         return (
             <Animated.View
                 style={{
-                    opacity: fadeAnim,
-                    transform: [
-                        {
-                            scale: this.state.fadeAnim.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [0.8, 1]
-                            }),
-                        },
-                    ],
+                    opacity: this.fadeAnim,
                 }}>
 
                 <Text style={styles.date}>{dateTimeString}</Text>

@@ -14,4 +14,6 @@ steps:
 
 - script: |
     npm install
+    npx expo login --username $EXPO_USERNAME --password $EXPO_PASSWORD
+    npx expo publish
   displayName: 'npm install and build'

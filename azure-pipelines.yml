@@ -14,7 +14,16 @@ steps:
 
 - script: |
     npm install
+  displayName: 'npm install'
+
+- script: |
     npm install --save-dev expo-cli
+  displayName: 'npm install --save-dev expo-cli'
+
+- script: |
     npx expo login -u $(EXPO_USERNAME) -p $(EXPO_PASSWORD)
+  displayName: 'expo login'
+
+- script: |
     npx expo publish
   displayName: 'expo publish'

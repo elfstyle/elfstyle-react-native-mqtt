@@ -38,7 +38,7 @@ const HomeTab = createMaterialTopTabNavigator(
                 marginTop: 0,
             },
             style: {
-                backgroundColor: 'rgb(26,82,118)',
+                backgroundColor: 'black',
                 height: 40,
             },
         },
